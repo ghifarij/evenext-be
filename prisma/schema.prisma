@@ -9,7 +9,7 @@ datasource db {
 }
 
 model User {
-  user_id   Int      @id @default(autoincrement())
+  user_id   String   @id @default(uuid())
   user_name String   @unique
   email     String   @unique
   password  String
@@ -18,4 +18,15 @@ model User {
   points    Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Organizer {
+  organizer_id   String   @id @default(uuid())
+  organizer_name String   @unique
+  email          String   @unique
+  password       String
+  phone          String   @unique
+  avatar         String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
