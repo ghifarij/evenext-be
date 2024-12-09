@@ -91,6 +91,7 @@ model Promotor {
 model Event {
   id          Int           @id @default(autoincrement())
   title       String        @unique
+  thumbnail   String        @default("https://res.cloudinary.com/dgsz2pael/image/upload/v1733734320/picture-2008484_1280_weralp.png")
   description String
   terms       String
   category    EventCategory
