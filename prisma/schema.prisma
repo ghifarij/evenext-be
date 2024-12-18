@@ -36,15 +36,16 @@ enum StatusOrder {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  username  String   @unique
-  email     String   @unique
-  password  String
-  avatar    String   @default("https://res.cloudinary.com/dgsz2pael/image/upload/v1733381132/blank-profile_sunr5j.webp")
-  isVerify  Boolean  @default(false)
-  ref_code  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(uuid())
+  username    String   @unique
+  email       String   @unique
+  password    String
+  avatar      String   @default("https://res.cloudinary.com/dgsz2pael/image/upload/v1733381132/blank-profile_sunr5j.webp")
+  isVerify    Boolean  @default(false)
+  ref_code    String?  @unique
+  referred_by String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   User_Point User_Point[]
 
