@@ -62,7 +62,7 @@ export class EventController {
           time: true,
           promotor: {
             select: {
-              name: true,
+              username: true,
               email: true,
               password: true,
               avatar: true,

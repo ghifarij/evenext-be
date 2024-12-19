@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from "../../prisma/generated/client";
 import { NextFunction, Request, Response } from "express";
 import prisma from "../prisma";
 import { validate as isUuid } from "uuid";
