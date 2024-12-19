@@ -57,7 +57,7 @@ model User {
 }
 
 model User_Point {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   point     Int      @default(10000)
   createdAt DateTime @default(now())
   expiredAt DateTime
@@ -67,7 +67,7 @@ model User_Point {
 }
 
 model User_Coupon {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(uuid())
   isRedeem   Boolean  @default(false)
   percentage Int      @default(10)
   createdAt  DateTime @default(now())
@@ -92,7 +92,7 @@ model Promotor {
 model Event {
   id          Int           @id @default(autoincrement())
   title       String        @unique
-  slug        String        @default("slug")
+  slug        String        @unique
   thumbnail   String        @default("https://res.cloudinary.com/dgsz2pael/image/upload/v1733734320/picture-2008484_1280_weralp.png")
   description String
   terms       String
@@ -100,7 +100,7 @@ model Event {
   location    EventLocation
   venue       String
   date        DateTime      @db.Date
-  time        DateTime      @db.Time
+  time        DateTime      @db.Time()
   createdAt   DateTime      @default(now())
   promotorId  String
   promotor    Promotor      @relation(fields: [promotorId], references: [id])
