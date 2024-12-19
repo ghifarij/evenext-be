@@ -78,7 +78,7 @@ model User_Coupon {
 
 model Promotor {
   id        String   @id @default(uuid())
-  name      String   @unique
+  username  String   @unique
   email     String   @unique
   password  String
   avatar    String   @default("https://res.cloudinary.com/dgsz2pael/image/upload/v1733381132/blank-profile_sunr5j.webp")
