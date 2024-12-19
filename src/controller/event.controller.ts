@@ -8,6 +8,7 @@ export class EventController {
         select: {
           id: true,
           title: true,
+          slug: true,
           thumbnail: true,
           date: true,
           location: true,
@@ -36,6 +37,47 @@ export class EventController {
         skip: +limit * (+page - 1),
       });
       res.status(200).send({ totalPage, page: +page, events });
+    } catch (err) {
+      console.log(err);
+      res.status(400).send(err);
+    }
+  }
+
+  async getEventSlug(req: Request, res: Response) {
+    try {
+      const { slug } = req.params;
+      const event = await prisma.event.findUnique({
+        where: { slug: slug },
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          thumbnail: true,
+          description: true,
+          terms: true,
+          category: true,
+          location: true,
+          venue: true,
+          date: true,
+          time: true,
+          promotor: {
+            select: {
+              name: true,
+              email: true,
+              password: true,
+              avatar: true,
+            },
+          },
+          Ticket: {
+            select: {
+              category: true,
+              seats: true,
+              price: true,
+            },
+          },
+        },
+      });
+      res.status(200).send({ event });
     } catch (err) {
       console.log(err);
       res.status(400).send(err);
