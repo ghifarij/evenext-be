@@ -13,7 +13,8 @@ import { addMonths } from "date-fns";
 export class AuthController {
   async registerUser(req: Request, res: Response) {
     try {
-      const { password, confirmPassword, username, email, ref_code } = req.body;
+      const { password, confirmPassword, username, email, referred_by } =
+        req.body;
       if (password != confirmPassword) throw { message: "Password not match!" };
 
       const user = await findUser(username, email);
@@ -22,69 +23,107 @@ export class AuthController {
       const salt = await genSalt(10);
       const hashPassword = await hash(password, salt);
 
-      const newUser: any = await prisma.user.create({
-        data: {
-          username,
-          email,
-          password: hashPassword,
-          ref_code: generateRefCode(),
-        },
-      });
+      if (!referred_by) {
+        const newUser: any = await prisma.user.create({
+          data: {
+            username,
+            email,
+            password: hashPassword,
+            ref_code: generateRefCode(),
+            referred_by,
+          },
+        });
+        const payload = { id: newUser.id };
+        const token = sign(payload, process.env.JWT_KEY!, { expiresIn: "60m" });
+        const linkUser = `${process.env.BASE_URL_FE}/verify/${token}`;
 
-      if (ref_code) {
+        const templatePath = path.join(
+          __dirname,
+          "../templates",
+          "verifyUser.hbs"
+        );
+        const tempateSource = fs.readFileSync(templatePath, "utf-8");
+        const compiledTemplate = Handlebars.compile(tempateSource);
+        const html = compiledTemplate({
+          username,
+          linkUser,
+          ref_code: newUser.ref_code,
+        });
+
+        await transporter.sendMail({
+          from: "evenext.corp@gmail.com",
+          to: email,
+          subject: "Welcome to Evenext !",
+          html,
+        });
+
+        res.status(201).send({ message: "Reqister Successfully ✅" });
+        return;
+      } else {
         const referrer = await prisma.user.findUnique({
-          where: { ref_code },
+          where: { ref_code: `${referred_by}` },
         });
         if (!referrer) throw { message: "Invalid Referral Code !" };
-
+        const newUser: any = await prisma.user.create({
+          data: {
+            username,
+            email,
+            password: hashPassword,
+            ref_code: generateRefCode(),
+            referred_by,
+          },
+        });
+        await prisma.user_Coupon.create({
+          data: {
+            percentage: 10,
+            isRedeem: false,
+            expiredAt: addMonths(new Date(), 3),
+            userId: newUser.id,
+          },
+        });
         await prisma.user_Point.create({
           data: {
             point: 10000,
             expiredAt: addMonths(new Date(), 3),
             isRedeem: false,
-            user: { connect: { id: referrer.id } },
+            userId: referrer.id,
           },
         });
+        const payload = { id: newUser.id };
+        const token = sign(payload, process.env.JWT_KEY!, { expiresIn: "60m" });
+        const linkUser = `${process.env.BASE_URL_FE}/verify/${token}`;
 
-        const coupon = await prisma.user_Coupon.create({
-          data: {
-            percentage: 10,
-            isRedeem: false,
-            expiredAt: addMonths(new Date(), 3),
-            user: { connect: { id: newUser.id } },
-          },
+        const templatePath = path.join(
+          __dirname,
+          "../templates",
+          "verifyUser.hbs"
+        );
+        const tempateSource = fs.readFileSync(templatePath, "utf-8");
+        const compiledTemplate = Handlebars.compile(tempateSource);
+        const html = compiledTemplate({
+          username,
+          linkUser,
+          ref_code: newUser.ref_code,
         });
 
-        newUser.percentage = coupon.percentage;
-        newUser.id = coupon.id;
-        newUser.referred_by = referrer.username;
+        await transporter.sendMail({
+          from: "evenext.corp@gmail.com",
+          to: email,
+          subject: "Welcome to Evenext !",
+          html,
+        });
+
+        res.status(201).send({ message: "Reqister Successfully ✅" });
+        return;
       }
 
-      const payload = { id: newUser.id };
-      const token = sign(payload, process.env.JWT_KEY!, { expiresIn: "60m" });
-      const linkUser = `${process.env.BASE_URL_FE}/verify/${token}`;
+      //   if (referrer) {
+      // if (!referrer) throw { message: "Invalid Referral Code !" };
 
-      const templatePath = path.join(
-        __dirname,
-        "../templates",
-        "verifyUser.hbs"
-      );
-      const tempateSource = fs.readFileSync(templatePath, "utf-8");
-      const compiledTemplate = Handlebars.compile(tempateSource);
-      const html = compiledTemplate({
-        username,
-        linkUser,
-        ref_code: newUser.ref_code,
-      });
-
-      await transporter.sendMail({
-        from: "evenext.corp@gmail.com",
-        to: email,
-        subject: "Welcome to Evenext !",
-        html,
-      });
-
-      res.status(201).send({ message: "Reqister Successfully ✅" });
+      // newUser.percentage = coupon.percentage;
+      // newUser.id = coupon.id;
+      //   newUser.referred_by = referrer.id;
+      //   }
     } catch (err) {
       console.log(err);
       res.status(400).send(err);

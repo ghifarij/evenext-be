@@ -13,7 +13,7 @@ export class PromotorController {
 
       if (search) {
         filter.OR = [
-          { name: { contains: search as string, mode: "insensitive" } },
+          { username: { contains: search as string, mode: "insensitive" } },
           { email: { contains: search as string, mode: "insensitive" } },
         ];
       }
@@ -65,15 +65,15 @@ export class PromotorController {
 
   async createPromotor(req: Request, res: Response) {
     try {
-      const { name, email, password } = req.body;
+      const { username, email, password } = req.body;
 
-      if (!name || !email || !password) {
+      if (!username || !email || !password) {
         res.status(400).json({ message: "Missing required fields" });
         return;
       }
 
       const newPromotor = await prisma.promotor.create({
-        data: { name, email, password },
+        data: { username, email, password },
       });
 
       res.status(201).send({ message: "Promotor Created! ✅", promotor: newPromotor});
