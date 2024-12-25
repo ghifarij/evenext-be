@@ -12,9 +12,9 @@ class UserRouter {
     }
     initializeRoutes() {
         this.router.get("/", this.userController.getUsers);
-        this.router.get("/profile", this.userController.getUsersId);
         this.router.post("/", this.userController.createUser);
         this.router.patch("/avatar", this.userController.editAvatar);
+        this.router.get("/:id", this.userController.getUsersId);
         this.router.patch("/:id", this.userController.editUser);
         this.router.delete("/:id", this.userController.deleteUser);
     }
