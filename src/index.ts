@@ -6,6 +6,7 @@ import { UserRouter } from "./router/user.router";
 import { AuthRouter } from "./router/auth.router";
 import cookieParser from "cookie-parser";
 import path from "path";
+import { PromotorRouter } from "./router/promotor.router";
 
 const PORT: number = 8000;
 
@@ -29,11 +30,13 @@ app.use("/api/public", express.static(path.join(__dirname, "../public")));
 const eventRouter = new EventRouter();
 const ticketRouter = new TicketRouter();
 const userRouter = new UserRouter();
+const promotorRouter = new PromotorRouter();
 const authRouter = new AuthRouter();
 
 app.use("/api/events", eventRouter.getRouter());
 app.use("/api/tickets", ticketRouter.getRouter());
 app.use("/api/users", userRouter.getRouter());
+app.use("/api/promotors", promotorRouter.getRouter());
 app.use("/api/auth", authRouter.getRouter());
 
 console.log(process.env.NODE_ENV === "production");
