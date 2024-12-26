@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../prisma";
+import { cloudinaryUpload } from "../services/cloudinary";
 
 export class EventController {
   async getEvents(req: Request, res: Response) {
@@ -78,6 +79,46 @@ export class EventController {
         },
       });
       res.status(200).send({ event });
+    } catch (err) {
+      console.log(err);
+      res.status(400).send(err);
+    }
+  }
+
+  async createEvent(req: Request, res: Response) {
+    try {
+      if (!req.file) throw { message: "thumbnail empty" };
+      const { secure_url } = await cloudinaryUpload(req.file, "event");
+      const {
+        title,
+        slug,
+        date,
+        time,
+        location,
+        venue,
+        category,
+        description,
+        terms,
+        promotorId,
+      } = req.body;
+
+      await prisma.event.create({
+        data: {
+          thumbnail: secure_url,
+          title,
+          slug,
+          date,
+          time,
+          location,
+          venue,
+          category,
+          description,
+          terms,
+          promotorId,
+        },
+      });
+
+      res.status(200).send({ message: "event created" });
     } catch (err) {
       console.log(err);
       res.status(400).send(err);

@@ -264,7 +264,11 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
+<<<<<<< HEAD
+    "rootEnvPath": null,
+=======
     "rootEnvPath": "../../../.env",
+>>>>>>> 47bbff906e5d2ce1f0b59f2192de21f694879d69
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../..",

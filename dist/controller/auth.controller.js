@@ -21,13 +21,20 @@ const mailer_1 = require("../services/mailer");
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const handlebars_1 = __importDefault(require("handlebars"));
+<<<<<<< HEAD
+=======
 const generateCode_1 = require("../utilities/generateCode");
 const date_fns_1 = require("date-fns");
+>>>>>>> 47bbff906e5d2ce1f0b59f2192de21f694879d69
 class AuthController {
     registerUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+<<<<<<< HEAD
+                const { password, confirmPassword, username, email } = req.body;
+=======
                 const { password, confirmPassword, username, email, referred_by } = req.body;
+>>>>>>> 47bbff906e5d2ce1f0b59f2192de21f694879d69
                 if (password != confirmPassword)
                     throw { message: "Password not match!" };
                 const user = yield (0, user_service_1.findUser)(username, email);
@@ -35,6 +42,26 @@ class AuthController {
                     throw { message: "Username or email has been used !" };
                 const salt = yield (0, bcrypt_1.genSalt)(10);
                 const hashPassword = yield (0, bcrypt_1.hash)(password, salt);
+<<<<<<< HEAD
+                const newUser = yield prisma_1.default.user.create({
+                    data: { username, email, password: hashPassword },
+                });
+                const payload = { id: newUser.id };
+                console.log(payload);
+                const token = (0, jsonwebtoken_1.sign)(payload, process.env.JWT_KEY, { expiresIn: "10m" });
+                const linkUser = `${process.env.BASE_URL_FE}/verify/${token}`;
+                const templatePath = path_1.default.join(__dirname, "../templates", "verifyUser.hbs");
+                const tempateSource = fs_1.default.readFileSync(templatePath, "utf-8");
+                const compiledTemplate = handlebars_1.default.compile(tempateSource);
+                const html = compiledTemplate({ username, linkUser });
+                yield mailer_1.transporter.sendMail({
+                    from: "evenext.corp@gmail.com",
+                    to: email,
+                    subject: "Welcome to Evenext !",
+                    html,
+                });
+                res.status(201).send({ message: "Reqister Successfully ✅" });
+=======
                 if (!referred_by) {
                     const newUser = yield prisma_1.default.user.create({
                         data: {
@@ -122,6 +149,7 @@ class AuthController {
                 // newUser.id = coupon.id;
                 //   newUser.referred_by = referrer.id;
                 //   }
+>>>>>>> 47bbff906e5d2ce1f0b59f2192de21f694879d69
             }
             catch (err) {
                 console.log(err);
@@ -167,6 +195,12 @@ class AuthController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { token } = req.params;
+<<<<<<< HEAD
+                const verifiedUser = (0, jsonwebtoken_1.verify)(token, process.env.JWT_KEY);
+                yield prisma_1.default.user.update({
+                    data: { isVerify: true },
+                    where: { id: verifiedUser.id },
+=======
                 console.log(token);
                 const verifiedUser = (0, jsonwebtoken_1.verify)(token, process.env.JWT_KEY);
                 console.log(verifiedUser);
@@ -260,6 +294,7 @@ class AuthController {
                 yield prisma_1.default.user.update({
                     data: { isVerify: true },
                     where: { id: verifiedPromotor.id },
+>>>>>>> 47bbff906e5d2ce1f0b59f2192de21f694879d69
                 });
                 res.status(200).send({ message: "Verify Successfully ✅" });
             }
