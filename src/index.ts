@@ -22,7 +22,7 @@ app.use(
 app.use(cookieParser());
 
 app.get("/api", (req: Request, res: Response) => {
-  res.status(200).send("Welcome to my expense API");
+  res.status(200).send("Welcome to my API");
 });
 
 app.use("/api/public", express.static(path.join(__dirname, "../public")));

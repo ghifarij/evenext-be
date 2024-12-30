@@ -17,6 +17,7 @@ const prisma_1 = __importDefault(require("../prisma"));
 const bcrypt_1 = require("bcrypt");
 const jsonwebtoken_1 = require("jsonwebtoken");
 const user_service_1 = require("../services/user.service");
+const promotor_service_1 = require("../services/promotor.service");
 const mailer_1 = require("../services/mailer");
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
@@ -230,20 +231,11 @@ class AuthController {
                 const isValidPass = yield (0, bcrypt_1.compare)(password, user.password);
                 if (!isValidPass)
                     throw { message: "Incorrect Password !" };
-                const payload = { id: user.id, role: user };
+                const payload = { id: user.id, type: "user" };
                 const token = (0, jsonwebtoken_1.sign)(payload, process.env.JWT_KEY, { expiresIn: "1d" });
-                res
-                    .status(200)
-                    .cookie("token", token, {
-                    httpOnly: true,
-                    secure: true,
-                    sameSite: "none",
-                    maxAge: 24 * 3600 * 1000,
-                    path: "/",
-                })
-                    .send({
+                res.status(200).send({
                     message: "Login Successfully ✅",
-                    user,
+                    token,
                 });
             }
             catch (err) {
@@ -266,6 +258,91 @@ class AuthController {
             catch (err) {
                 console.log(err);
                 res.status(400).send(err);
+            }
+        });
+    }
+    getSession(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // Retrieve token from Authorization header
+                const authHeader = req.headers.authorization;
+                if (!authHeader || !authHeader.startsWith("Bearer ")) {
+                    res.status(401).send({ message: "Unauthorized: No token provided" });
+                    return;
+                }
+                const token = authHeader.split(" ")[1];
+                if (!token) {
+                    res.status(401).send({ message: "Unauthorized: Token missing" });
+                    return;
+                }
+                // Verify token
+                const decoded = (0, jsonwebtoken_1.verify)(token, process.env.JWT_KEY);
+                if (!decoded || !decoded.type) {
+                    res.status(403).send({ message: "Forbidden: Invalid token" });
+                    return;
+                }
+                // Handle different user types
+                if (decoded.type === "promotor") {
+                    const promotor = yield prisma_1.default.promotor.findUnique({
+                        where: { id: decoded.id },
+                    });
+                    if (!promotor) {
+                        res.status(404).send({ message: "Promotor not found" });
+                        return;
+                    }
+                    res.status(200).send({
+                        id: promotor.id,
+                        type: "promotor",
+                        username: promotor.username,
+                        email: promotor.email,
+                        avatar: promotor.avatar || null,
+                    });
+                }
+                else if (decoded.type === "user") {
+                    const user = yield prisma_1.default.user.findUnique({
+                        where: { id: decoded.id },
+                        select: {
+                            id: true,
+                            username: true,
+                            email: true,
+                            avatar: true,
+                            createdAt: true,
+                            User_Point: true,
+                            ref_code: true,
+                            updatedAt: true,
+                            isVerify: true,
+                            User_Coupon: {
+                                select: {
+                                    percentage: true,
+                                    expiredAt: true,
+                                },
+                            },
+                        },
+                    });
+                    if (!user) {
+                        res.status(404).send({ message: "User not found" });
+                        return;
+                    }
+                    res.status(200).json({
+                        id: user.id,
+                        type: "user",
+                        username: user.username,
+                        email: user.email,
+                        avatar: user.avatar,
+                        User_Point: user.User_Point,
+                        ref_code: user.ref_code,
+                        User_Coupon: user.User_Coupon,
+                    });
+                }
+                else {
+                    res.status(403).json({ message: "Forbidden: Unknown token type" });
+                }
+            }
+            catch (err) {
+                console.error("Error fetching session:");
+                res
+                    .status(401)
+                    .send({ message: "Unauthorized: Invalid or expired token" });
             }
         });
     }
