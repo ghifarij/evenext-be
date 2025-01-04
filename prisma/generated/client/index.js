@@ -246,7 +246,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\Materi\\JCWD 0508\\Minpro\\evenext-be\\prisma\\generated\\client",
+      "value": "D:\\Purwadhika\\evenext-be\\prisma\\generated\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -260,15 +260,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "D:\\Materi\\JCWD 0508\\Minpro\\evenext-be\\prisma\\schema.prisma",
+    "sourceFilePath": "D:\\Purwadhika\\evenext-be\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-<<<<<<< HEAD
     "rootEnvPath": null,
-=======
-    "rootEnvPath": "../../../.env",
->>>>>>> 47bbff906e5d2ce1f0b59f2192de21f694879d69
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../..",
