@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventController = void 0;
 const prisma_1 = __importDefault(require("../prisma"));
+const cloudinary_1 = require("../services/cloudinary");
 class EventController {
     getEvents(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -94,6 +95,36 @@ class EventController {
                     },
                 });
                 res.status(200).send({ event });
+            }
+            catch (err) {
+                console.log(err);
+                res.status(400).send(err);
+            }
+        });
+    }
+    createEvent(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (!req.file)
+                    throw { message: "thumbnail empty" };
+                const { secure_url } = yield (0, cloudinary_1.cloudinaryUpload)(req.file, "event");
+                const { title, slug, date, time, location, venue, category, description, terms, promotorId, } = req.body;
+                yield prisma_1.default.event.create({
+                    data: {
+                        thumbnail: secure_url,
+                        title,
+                        slug,
+                        date,
+                        time,
+                        location,
+                        venue,
+                        category,
+                        description,
+                        terms,
+                        promotorId,
+                    },
+                });
+                res.status(200).send({ message: "event created" });
             }
             catch (err) {
                 console.log(err);

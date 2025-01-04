@@ -8,8 +8,8 @@ export const verifyToken = async (
   next: NextFunction
 ) => {
   try {
-    // const token = req.header("Authorization")?.replace("Bearer ", "");
-    const token = req.cookies?.token; // kalo sudah pakai cookies
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    // const token = req.cookies?.token; // kalo sudah pakai cookies
     if (!token) throw "Unauthorize!";
 
     const verifiedUser = verify(token, process.env.JWT_KEY!);
@@ -38,8 +38,8 @@ export const verifyTokenPro = async (
   next: NextFunction
 ) => {
   try {
-    // const token = req.header("Authorization")?.replace("Bearer ", "");
-    const token = req.cookies?.token; // kalo sudah pakai cookies
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    // const token = req.cookies?.token; // kalo sudah pakai cookies
     if (!token) throw "Unauthorize!";
 
     const verifiedPromotor = verify(token, process.env.JWT_KEY!);

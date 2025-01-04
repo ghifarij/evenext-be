@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import prisma from "../prisma";
 import { validate as isUuid } from "uuid";
+import { cloudinaryUpload } from "../services/cloudinary";
 
 export class PromotorController {
   async getPromotors(req: Request, res: Response) {
@@ -97,7 +98,7 @@ export class PromotorController {
       const { id } = req.params;
       const updatedPromotor = await prisma.promotor.update({
         data: req.body,
-        where: { id },
+        where: { id:id || "" },
       });
       res.status(200).send({ message: "Promotor Updated! ✅", promotor: updatedPromotor });
     } catch (err) {
@@ -110,7 +111,7 @@ export class PromotorController {
     try {
       const { id } = req.params;
       await prisma.promotor.delete({ where: { id } });
-      res.status(200).send("Promotor Deleted! ✅");
+      res.status(200).send({message: "Promotor Deleted! ✅"});
     } catch (err) {
       console.log(err);
       res.status(400).send(err);
@@ -119,22 +120,29 @@ export class PromotorController {
 
   async editAvatarPro(req: Request, res: Response) {
     try {
-      const { id } = req.params;
-      const { avatarUrl } = req.body;
-
-      if (!avatarUrl) {
-        res.status(400).json({ message: "Avatar URL is required" });
-        return;
-      }
-
-      const updatedPromotor = await prisma.promotor.update({
-        where: { id },
-        data: { avatar: avatarUrl },
+      if (!req.file) throw { message: "File is Empty!" };
+      const link = `http://localhost:8000/api/public/avatar/${req.file.filename}`;
+      await prisma.promotor.update({
+        data: { avatar: link },
+        where: { id: req.promotor?.id },
       });
+      res.status(200).send({ message: "Avatar Edited! ✅" });
+    } catch (err) {
+      console.log(err);
+      res.status(400).send(err);
+    }
+  }
 
-      res
-        .status(200)
-        .send({ message: "Avatar Updated! ✅", promotor: updatedPromotor });
+  async editAvatarProCloud(req: Request, res: Response) {
+    try {
+      if (!req.file) throw { message: "File is Empty!" };
+      const { secure_url } = await cloudinaryUpload(req.file, "avatar");
+
+      await prisma.promotor.update({
+        data: { avatar: secure_url },
+        where: { id: req.promotor?.id },
+      });
+      res.status(200).send({ message: "Avatar Edited! ✅" });
     } catch (err) {
       console.log(err);
       res.status(400).send(err);
