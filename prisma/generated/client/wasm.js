@@ -180,7 +180,6 @@ exports.Prisma.TicketScalarFieldEnum = {
   category: 'category',
   seats: 'seats',
   price: 'price',
-  isFree: 'isFree',
   createdAt: 'createdAt',
   eventId: 'eventId'
 };
