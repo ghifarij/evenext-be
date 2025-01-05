@@ -76,7 +76,9 @@ export class PromotorController {
         data: { username, email, password },
       });
 
-      res.status(201).send({ message: "Promotor Created! ✅", promotor: newPromotor});
+      res
+        .status(201)
+        .send({ message: "Promotor Created! ✅", promotor: newPromotor });
     } catch (err: any) {
       if (
         err instanceof Prisma.PrismaClientKnownRequestError &&
@@ -99,7 +101,9 @@ export class PromotorController {
         data: req.body,
         where: { id },
       });
-      res.status(200).send({ message: "Promotor Updated! ✅", promotor: updatedPromotor });
+      res
+        .status(200)
+        .send({ message: "Promotor Updated! ✅", promotor: updatedPromotor });
     } catch (err) {
       console.log(err);
       res.status(400).send(err);

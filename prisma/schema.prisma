@@ -118,7 +118,6 @@ model Ticket {
   category  TicketCategory
   seats     Int
   price     Int
-  isFree    Boolean        @default(false)
   createdAt DateTime       @default(now())
   eventId   Int
   event     Event          @relation(fields: [eventId], references: [id])

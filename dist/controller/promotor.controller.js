@@ -79,7 +79,9 @@ class PromotorController {
                 const newPromotor = yield prisma_1.default.promotor.create({
                     data: { username, email, password },
                 });
-                res.status(201).send({ message: "Promotor Created! ✅", promotor: newPromotor });
+                res
+                    .status(201)
+                    .send({ message: "Promotor Created! ✅", promotor: newPromotor });
             }
             catch (err) {
                 if (err instanceof client_1.Prisma.PrismaClientKnownRequestError &&
@@ -102,7 +104,9 @@ class PromotorController {
                     data: req.body,
                     where: { id },
                 });
-                res.status(200).send({ message: "Promotor Updated! ✅", promotor: updatedPromotor });
+                res
+                    .status(200)
+                    .send({ message: "Promotor Updated! ✅", promotor: updatedPromotor });
             }
             catch (err) {
                 console.log(err);

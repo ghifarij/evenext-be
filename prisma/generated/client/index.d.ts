@@ -6987,7 +6987,6 @@ export namespace Prisma {
     category: $Enums.TicketCategory | null
     seats: number | null
     price: number | null
-    isFree: boolean | null
     createdAt: Date | null
     eventId: number | null
   }
@@ -6997,7 +6996,6 @@ export namespace Prisma {
     category: $Enums.TicketCategory | null
     seats: number | null
     price: number | null
-    isFree: boolean | null
     createdAt: Date | null
     eventId: number | null
   }
@@ -7007,7 +7005,6 @@ export namespace Prisma {
     category: number
     seats: number
     price: number
-    isFree: number
     createdAt: number
     eventId: number
     _all: number
@@ -7033,7 +7030,6 @@ export namespace Prisma {
     category?: true
     seats?: true
     price?: true
-    isFree?: true
     createdAt?: true
     eventId?: true
   }
@@ -7043,7 +7039,6 @@ export namespace Prisma {
     category?: true
     seats?: true
     price?: true
-    isFree?: true
     createdAt?: true
     eventId?: true
   }
@@ -7053,7 +7048,6 @@ export namespace Prisma {
     category?: true
     seats?: true
     price?: true
-    isFree?: true
     createdAt?: true
     eventId?: true
     _all?: true
@@ -7150,7 +7144,6 @@ export namespace Prisma {
     category: $Enums.TicketCategory
     seats: number
     price: number
-    isFree: boolean
     createdAt: Date
     eventId: number
     _count: TicketCountAggregateOutputType | null
@@ -7179,7 +7172,6 @@ export namespace Prisma {
     category?: boolean
     seats?: boolean
     price?: boolean
-    isFree?: boolean
     createdAt?: boolean
     eventId?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
@@ -7192,7 +7184,6 @@ export namespace Prisma {
     category?: boolean
     seats?: boolean
     price?: boolean
-    isFree?: boolean
     createdAt?: boolean
     eventId?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
@@ -7203,7 +7194,6 @@ export namespace Prisma {
     category?: boolean
     seats?: boolean
     price?: boolean
-    isFree?: boolean
     createdAt?: boolean
     eventId?: boolean
   }
@@ -7228,7 +7218,6 @@ export namespace Prisma {
       category: $Enums.TicketCategory
       seats: number
       price: number
-      isFree: boolean
       createdAt: Date
       eventId: number
     }, ExtArgs["result"]["ticket"]>
@@ -7630,7 +7619,6 @@ export namespace Prisma {
     readonly category: FieldRef<"Ticket", 'TicketCategory'>
     readonly seats: FieldRef<"Ticket", 'Int'>
     readonly price: FieldRef<"Ticket", 'Int'>
-    readonly isFree: FieldRef<"Ticket", 'Boolean'>
     readonly createdAt: FieldRef<"Ticket", 'DateTime'>
     readonly eventId: FieldRef<"Ticket", 'Int'>
   }
@@ -11078,7 +11066,6 @@ export namespace Prisma {
     category: 'category',
     seats: 'seats',
     price: 'price',
-    isFree: 'isFree',
     createdAt: 'createdAt',
     eventId: 'eventId'
   };
@@ -11669,7 +11656,6 @@ export namespace Prisma {
     category?: EnumTicketCategoryFilter<"Ticket"> | $Enums.TicketCategory
     seats?: IntFilter<"Ticket"> | number
     price?: IntFilter<"Ticket"> | number
-    isFree?: BoolFilter<"Ticket"> | boolean
     createdAt?: DateTimeFilter<"Ticket"> | Date | string
     eventId?: IntFilter<"Ticket"> | number
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
@@ -11681,7 +11667,6 @@ export namespace Prisma {
     category?: SortOrder
     seats?: SortOrder
     price?: SortOrder
-    isFree?: SortOrder
     createdAt?: SortOrder
     eventId?: SortOrder
     event?: EventOrderByWithRelationInput
@@ -11696,7 +11681,6 @@ export namespace Prisma {
     category?: EnumTicketCategoryFilter<"Ticket"> | $Enums.TicketCategory
     seats?: IntFilter<"Ticket"> | number
     price?: IntFilter<"Ticket"> | number
-    isFree?: BoolFilter<"Ticket"> | boolean
     createdAt?: DateTimeFilter<"Ticket"> | Date | string
     eventId?: IntFilter<"Ticket"> | number
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
@@ -11708,7 +11692,6 @@ export namespace Prisma {
     category?: SortOrder
     seats?: SortOrder
     price?: SortOrder
-    isFree?: SortOrder
     createdAt?: SortOrder
     eventId?: SortOrder
     _count?: TicketCountOrderByAggregateInput
@@ -11726,7 +11709,6 @@ export namespace Prisma {
     category?: EnumTicketCategoryWithAggregatesFilter<"Ticket"> | $Enums.TicketCategory
     seats?: IntWithAggregatesFilter<"Ticket"> | number
     price?: IntWithAggregatesFilter<"Ticket"> | number
-    isFree?: BoolWithAggregatesFilter<"Ticket"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Ticket"> | Date | string
     eventId?: IntWithAggregatesFilter<"Ticket"> | number
   }
@@ -12354,7 +12336,6 @@ export namespace Prisma {
     category: $Enums.TicketCategory
     seats: number
     price: number
-    isFree?: boolean
     createdAt?: Date | string
     event: EventCreateNestedOneWithoutTicketInput
     Order_Details?: Order_DetailsCreateNestedManyWithoutTicketInput
@@ -12365,7 +12346,6 @@ export namespace Prisma {
     category: $Enums.TicketCategory
     seats: number
     price: number
-    isFree?: boolean
     createdAt?: Date | string
     eventId: number
     Order_Details?: Order_DetailsUncheckedCreateNestedManyWithoutTicketInput
@@ -12375,7 +12355,6 @@ export namespace Prisma {
     category?: EnumTicketCategoryFieldUpdateOperationsInput | $Enums.TicketCategory
     seats?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
-    isFree?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutTicketNestedInput
     Order_Details?: Order_DetailsUpdateManyWithoutTicketNestedInput
@@ -12386,7 +12365,6 @@ export namespace Prisma {
     category?: EnumTicketCategoryFieldUpdateOperationsInput | $Enums.TicketCategory
     seats?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
-    isFree?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     eventId?: IntFieldUpdateOperationsInput | number
     Order_Details?: Order_DetailsUncheckedUpdateManyWithoutTicketNestedInput
@@ -12397,7 +12375,6 @@ export namespace Prisma {
     category: $Enums.TicketCategory
     seats: number
     price: number
-    isFree?: boolean
     createdAt?: Date | string
     eventId: number
   }
@@ -12406,7 +12383,6 @@ export namespace Prisma {
     category?: EnumTicketCategoryFieldUpdateOperationsInput | $Enums.TicketCategory
     seats?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
-    isFree?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -12415,7 +12391,6 @@ export namespace Prisma {
     category?: EnumTicketCategoryFieldUpdateOperationsInput | $Enums.TicketCategory
     seats?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
-    isFree?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     eventId?: IntFieldUpdateOperationsInput | number
   }
@@ -13060,7 +13035,6 @@ export namespace Prisma {
     category?: SortOrder
     seats?: SortOrder
     price?: SortOrder
-    isFree?: SortOrder
     createdAt?: SortOrder
     eventId?: SortOrder
   }
@@ -13077,7 +13051,6 @@ export namespace Prisma {
     category?: SortOrder
     seats?: SortOrder
     price?: SortOrder
-    isFree?: SortOrder
     createdAt?: SortOrder
     eventId?: SortOrder
   }
@@ -13087,7 +13060,6 @@ export namespace Prisma {
     category?: SortOrder
     seats?: SortOrder
     price?: SortOrder
-    isFree?: SortOrder
     createdAt?: SortOrder
     eventId?: SortOrder
   }
@@ -14559,7 +14531,6 @@ export namespace Prisma {
     category: $Enums.TicketCategory
     seats: number
     price: number
-    isFree?: boolean
     createdAt?: Date | string
     Order_Details?: Order_DetailsCreateNestedManyWithoutTicketInput
   }
@@ -14569,7 +14540,6 @@ export namespace Prisma {
     category: $Enums.TicketCategory
     seats: number
     price: number
-    isFree?: boolean
     createdAt?: Date | string
     Order_Details?: Order_DetailsUncheckedCreateNestedManyWithoutTicketInput
   }
@@ -14695,7 +14665,6 @@ export namespace Prisma {
     category?: EnumTicketCategoryFilter<"Ticket"> | $Enums.TicketCategory
     seats?: IntFilter<"Ticket"> | number
     price?: IntFilter<"Ticket"> | number
-    isFree?: BoolFilter<"Ticket"> | boolean
     createdAt?: DateTimeFilter<"Ticket"> | Date | string
     eventId?: IntFilter<"Ticket"> | number
   }
@@ -15072,7 +15041,6 @@ export namespace Prisma {
     category: $Enums.TicketCategory
     seats: number
     price: number
-    isFree?: boolean
     createdAt?: Date | string
     event: EventCreateNestedOneWithoutTicketInput
   }
@@ -15082,7 +15050,6 @@ export namespace Prisma {
     category: $Enums.TicketCategory
     seats: number
     price: number
-    isFree?: boolean
     createdAt?: Date | string
     eventId: number
   }
@@ -15133,7 +15100,6 @@ export namespace Prisma {
     category?: EnumTicketCategoryFieldUpdateOperationsInput | $Enums.TicketCategory
     seats?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
-    isFree?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutTicketNestedInput
   }
@@ -15143,7 +15109,6 @@ export namespace Prisma {
     category?: EnumTicketCategoryFieldUpdateOperationsInput | $Enums.TicketCategory
     seats?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
-    isFree?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     eventId?: IntFieldUpdateOperationsInput | number
   }
@@ -15546,7 +15511,6 @@ export namespace Prisma {
     category: $Enums.TicketCategory
     seats: number
     price: number
-    isFree?: boolean
     createdAt?: Date | string
   }
 
@@ -15571,7 +15535,6 @@ export namespace Prisma {
     category?: EnumTicketCategoryFieldUpdateOperationsInput | $Enums.TicketCategory
     seats?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
-    isFree?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Order_Details?: Order_DetailsUpdateManyWithoutTicketNestedInput
   }
@@ -15581,7 +15544,6 @@ export namespace Prisma {
     category?: EnumTicketCategoryFieldUpdateOperationsInput | $Enums.TicketCategory
     seats?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
-    isFree?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Order_Details?: Order_DetailsUncheckedUpdateManyWithoutTicketNestedInput
   }
@@ -15591,7 +15553,6 @@ export namespace Prisma {
     category?: EnumTicketCategoryFieldUpdateOperationsInput | $Enums.TicketCategory
     seats?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
-    isFree?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

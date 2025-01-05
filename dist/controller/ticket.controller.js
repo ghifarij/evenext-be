@@ -15,6 +15,40 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TicketController = void 0;
 const prisma_1 = __importDefault(require("../prisma"));
 class TicketController {
+    createTicket(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const tickets = req.body;
+                const { eventId } = req.params;
+                if (!eventId) {
+                    return res.status(400).json({ error: "eventId is required" });
+                }
+                const event = yield prisma_1.default.event.findUnique({
+                    where: { id: Number(eventId) },
+                });
+                if (!event) {
+                    return res.status(404).json({ error: "Event not found" });
+                }
+                const createdTickets = yield Promise.all(tickets.map((ticket) => prisma_1.default.ticket.create({
+                    data: {
+                        category: ticket.category,
+                        seats: ticket.seats,
+                        price: ticket.price,
+                        event: {
+                            connect: {
+                                id: Number(eventId),
+                            },
+                        },
+                    },
+                })));
+                res.status(201).send({ createdTickets });
+            }
+            catch (err) {
+                console.error(err);
+                res.status(500).send(err);
+            }
+        });
+    }
     getTickets(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

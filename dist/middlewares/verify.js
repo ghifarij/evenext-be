@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkUser = exports.verifyToken = void 0;
+exports.checkPromotor = exports.verifyTokenPro = exports.checkUser = exports.verifyToken = void 0;
 const jsonwebtoken_1 = require("jsonwebtoken");
 const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -35,7 +35,35 @@ const checkUser = (req, res, next) => {
         next();
     }
     else {
-        res.status(400).send({ message: "Unauthorize, Promotor Only!" });
+        res.status(400).send({ message: "Unauthorize, User Only!" });
     }
 };
 exports.checkUser = checkUser;
+const verifyTokenPro = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        // const token = req.header("Authorization")?.replace("Bearer ", "");
+        const token = (_a = req.cookies) === null || _a === void 0 ? void 0 : _a.token; // kalo sudah pakai cookies
+        if (!token)
+            throw "Unauthorize!";
+        const verifiedPromotor = (0, jsonwebtoken_1.verify)(token, process.env.JWT_KEY);
+        req.promotor = verifiedPromotor;
+        console.log(verifiedPromotor);
+        next();
+    }
+    catch (err) {
+        console.log(err);
+        res.status(400).send(err);
+    }
+});
+exports.verifyTokenPro = verifyTokenPro;
+const checkPromotor = (req, res, next) => {
+    var _a;
+    if ((_a = req.promotor) === null || _a === void 0 ? void 0 : _a.id) {
+        next();
+    }
+    else {
+        res.status(400).send({ message: "Unauthorize, Promotor Only!" });
+    }
+};
+exports.checkPromotor = checkPromotor;
