@@ -256,35 +256,35 @@ export class AuthController {
         res.status(401).send({ message: "Unauthorized: No token provided" });
         return;
       }
-
+  
       const token = authHeader.split(" ")[1];
       if (!token) {
         res.status(401).send({ message: "Unauthorized: Token missing" });
         return;
       }
-
+  
       // Verify token
       const decoded = verify(token, process.env.JWT_KEY!) as {
         id: string;
         type: string;
       };
-
+  
       if (!decoded || !decoded.type) {
         res.status(403).send({ message: "Forbidden: Invalid token" });
         return;
       }
-
+  
       // Handle different user types
       if (decoded.type === "promotor") {
         const promotor = await prisma.promotor.findUnique({
           where: { id: decoded.id },
         });
-
+  
         if (!promotor) {
           res.status(404).send({ message: "Promotor not found" });
           return;
         }
-
+  
         res.status(200).send({
           id: promotor.id,
           type: "promotor",
@@ -301,10 +301,15 @@ export class AuthController {
             email: true,
             avatar: true,
             createdAt: true,
-            User_Point: true,
             ref_code: true,
             updatedAt: true,
             isVerify: true,
+            User_Point: {
+              select: {
+                point: true,
+                expiredAt: true,
+              },
+            },
             User_Coupon: {
               select: {
                 percentage: true,
@@ -313,12 +318,15 @@ export class AuthController {
             },
           },
         });
-
+  
         if (!user) {
           res.status(404).send({ message: "User not found" });
           return;
         }
-
+  
+        // Calculate total points
+        const totalPoints = user.User_Point.reduce((sum, point) => sum + point.point, 0);
+  
         res.status(200).json({
           id: user.id,
           type: "user",
@@ -326,6 +334,7 @@ export class AuthController {
           email: user.email,
           avatar: user.avatar,
           User_Point: user.User_Point,
+          totalPoints, // Include the calculated total points
           ref_code: user.ref_code,
           User_Coupon: user.User_Coupon,
         });
@@ -333,12 +342,12 @@ export class AuthController {
         res.status(403).json({ message: "Forbidden: Unknown token type" });
       }
     } catch (err) {
-      console.error("Error fetching session:");
+      console.error("Error fetching session:", err);
       res
         .status(401)
         .send({ message: "Unauthorized: Invalid or expired token" });
     }
-  }
+  }  
 
   async forgotPasswordUser(req: Request, res: Response) {
     try {
