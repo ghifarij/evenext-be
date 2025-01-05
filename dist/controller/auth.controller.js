@@ -331,5 +331,194 @@ class AuthController {
             }
         });
     }
+<<<<<<< HEAD
+=======
+    forgotPasswordUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { email } = req.body;
+                // Check if the email exists in the database
+                const user = yield prisma_1.default.user.findUnique({
+                    where: { email },
+                });
+                if (!user) {
+                    res.status(404).send({ message: "Email not found!" });
+                    return;
+                }
+                // Generate a password reset token
+                const payload = { id: user.id, email: user.email };
+                const resetToken = (0, jsonwebtoken_1.sign)(payload, process.env.JWT_KEY, {
+                    expiresIn: "1h", // Token valid for 1 hour
+                });
+                // Create the password reset link
+                const resetLink = `${process.env.BASE_URL_FE}/login/resetPasswordUser/${resetToken}`;
+                // Prepare the email template
+                const templatePath = path_1.default.join(__dirname, "../templates", "forgotPassword.hbs");
+                const templateSource = fs_1.default.readFileSync(templatePath, "utf-8");
+                const compiledTemplate = handlebars_1.default.compile(templateSource);
+                const html = compiledTemplate({ username: user.username, resetLink });
+                // Send the email
+                yield mailer_1.transporter.sendMail({
+                    from: "evenext.corp@gmail.com",
+                    to: email,
+                    subject: "Password Reset Request",
+                    html,
+                });
+                res
+                    .status(200)
+                    .send({ message: "Password reset link sent to your email!" });
+            }
+            catch (err) {
+                console.error(err);
+                res
+                    .status(500)
+                    .send({ message: "An error occurred while sending the reset link." });
+            }
+        });
+    }
+    resetPasswordUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { token, newPassword, confirmPassword } = req.body;
+                console.log("Request body:", req.body);
+                if (!token) {
+                    res.status(400).send({ message: "Token is required!" });
+                    return;
+                }
+                if (newPassword !== confirmPassword) {
+                    res.status(400).send({ message: "Passwords do not match!" });
+                    return;
+                }
+                // Verify the reset token
+                let decoded;
+                try {
+                    decoded = (0, jsonwebtoken_1.verify)(token, process.env.JWT_KEY);
+                }
+                catch (err) {
+                    console.error("Token verification failed:", err);
+                    res.status(400).send({ message: "Invalid or expired token!" });
+                    return;
+                }
+                console.log("Token decoded:", decoded);
+                // Check if the user exists
+                const user = yield prisma_1.default.user.findUnique({
+                    where: { id: decoded.id },
+                });
+                if (!user) {
+                    res.status(404).send({ message: "User not found!" });
+                    return;
+                }
+                // Hash the new password
+                const salt = yield (0, bcrypt_1.genSalt)(10);
+                const hashedPassword = yield (0, bcrypt_1.hash)(newPassword, salt);
+                // Update the user's password
+                yield prisma_1.default.user.update({
+                    where: { id: user.id },
+                    data: { password: hashedPassword },
+                });
+                res
+                    .status(200)
+                    .send({ message: "Password has been reset successfully!" });
+            }
+            catch (err) {
+                console.error("Error resetting password:", err);
+                res.status(500).send({ message: "An internal server error occurred!" });
+            }
+        });
+    }
+    forgotPasswordPromotor(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { email } = req.body;
+                // Check if the email exists in the database
+                const promotor = yield prisma_1.default.promotor.findUnique({
+                    where: { email },
+                });
+                if (!promotor) {
+                    res.status(404).send({ message: "Email not found!" });
+                    return;
+                }
+                // Generate a password reset token
+                const payload = { id: promotor.id, email: promotor.email };
+                const resetToken = (0, jsonwebtoken_1.sign)(payload, process.env.JWT_KEY, {
+                    expiresIn: "1h", // Token valid for 1 hour
+                });
+                // Create the password reset link
+                const resetLink = `${process.env.BASE_URL_FE}/promotor/resetPasswordPromotor/${resetToken}`;
+                // Prepare the email template
+                const templatePath = path_1.default.join(__dirname, "../templates", "forgotPassword.hbs");
+                const templateSource = fs_1.default.readFileSync(templatePath, "utf-8");
+                const compiledTemplate = handlebars_1.default.compile(templateSource);
+                const html = compiledTemplate({ username: promotor.username, resetLink });
+                // Send the email
+                yield mailer_1.transporter.sendMail({
+                    from: "evenext.corp@gmail.com",
+                    to: email,
+                    subject: "Password Reset Request",
+                    html,
+                });
+                res
+                    .status(200)
+                    .send({ message: "Password reset link sent to your email!" });
+            }
+            catch (err) {
+                console.error(err);
+                res
+                    .status(500)
+                    .send({ message: "An error occurred while sending the reset link." });
+            }
+        });
+    }
+    resetPasswordPromotor(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { token, newPassword, confirmPassword } = req.body;
+                console.log("Request body:", req.body);
+                if (!token) {
+                    res.status(400).send({ message: "Token is required!" });
+                    return;
+                }
+                if (newPassword !== confirmPassword) {
+                    res.status(400).send({ message: "Passwords do not match!" });
+                    return;
+                }
+                // Verify the reset token
+                let decoded;
+                try {
+                    decoded = (0, jsonwebtoken_1.verify)(token, process.env.JWT_KEY);
+                }
+                catch (err) {
+                    console.error("Token verification failed:", err);
+                    res.status(400).send({ message: "Invalid or expired token!" });
+                    return;
+                }
+                console.log("Token decoded:", decoded);
+                // Check if the promotor exists
+                const promotor = yield prisma_1.default.promotor.findUnique({
+                    where: { id: decoded.id },
+                });
+                if (!promotor) {
+                    res.status(404).send({ message: "Promotor not found!" });
+                    return;
+                }
+                // Hash the new password
+                const salt = yield (0, bcrypt_1.genSalt)(10);
+                const hashedPassword = yield (0, bcrypt_1.hash)(newPassword, salt);
+                // Update the promotor's password
+                yield prisma_1.default.promotor.update({
+                    where: { id: promotor.id },
+                    data: { password: hashedPassword },
+                });
+                res
+                    .status(200)
+                    .send({ message: "Password has been reset successfully!" });
+            }
+            catch (err) {
+                console.error("Error resetting password:", err);
+                res.status(500).send({ message: "An internal server error occurred!" });
+            }
+        });
+    }
+>>>>>>> 29015dbb829ec7e191342e3e6ac54a2e823e33b7
 }
 exports.AuthController = AuthController;
