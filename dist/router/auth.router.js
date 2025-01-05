@@ -15,6 +15,12 @@ class AuthRouter {
         this.router.post("/registerPro", this.authController.registerPromotor);
         this.router.post("/login", this.authController.loginUser);
         this.router.post("/loginPro", this.authController.loginPromotor);
+        //untuk lupa password dan ganti password si user
+        this.router.post("/forgotPassword", this.authController.forgotPasswordUser);
+        this.router.post("/resetPassword", this.authController.resetPasswordUser);
+        //untuk lupa password dan ganti password si promotor
+        this.router.post("/forgotPasswordPromotor", this.authController.forgotPasswordPromotor);
+        this.router.post("/resetPasswordPromotor", this.authController.resetPasswordPromotor);
         this.router.patch("/verify/:token", this.authController.verifyUser);
         this.router.patch("/verifyPro/:token", this.authController.verifyPromotor);
     }
