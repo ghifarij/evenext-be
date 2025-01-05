@@ -502,59 +502,59 @@ export class AuthController {
   }
 
   async resetPasswordPromotor(req: Request, res: Response) {
-  try {
-    const { token, newPassword, confirmPassword } = req.body;
-
-    console.log("Request body:", req.body);
-    console.log("Token received:", req.body.token);
-
-    if (!token || typeof token !== "string" || token.trim() === "") {
-      res.status(400).send({ message: "Token is required!" });
-      return;
-    }
-
-    if (newPassword !== confirmPassword) {
-      res.status(400).send({ message: "Passwords do not match!" });
-      return;
-    }
-
-    // Verify the reset token
-    let decoded: any;
     try {
-      decoded = verify(token, process.env.JWT_KEY!);
+      const { token, newPassword, confirmPassword } = req.body;
+
+      console.log("Request body:", req.body);
+
+      if (!token) {
+        res.status(400).send({ message: "Token is required!" });
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        res.status(400).send({ message: "Passwords do not match!" });
+        return;
+      }
+
+      // Verify the reset token
+      let decoded: any;
+      try {
+        decoded = verify(token, process.env.JWT_KEY!);
+      } catch (err) {
+        console.error("Token verification failed:", err);
+        res.status(400).send({ message: "Invalid or expired token!" });
+        return;
+      }
+
+      console.log("Token decoded:", decoded);
+
+      // Check if the promotor exists
+      const promotor = await prisma.promotor.findUnique({
+        where: { id: decoded.id },
+      });
+
+      if (!promotor) {
+        res.status(404).send({ message: "Promotor not found!" });
+        return;
+      }
+
+      // Hash the new password
+      const salt = await genSalt(10);
+      const hashedPassword = await hash(newPassword, salt);
+
+      // Update the promotor's password
+      await prisma.promotor.update({
+        where: { id: promotor.id },
+        data: { password: hashedPassword },
+      });
+
+      res
+        .status(200)
+        .send({ message: "Password has been reset successfully!" });
     } catch (err) {
-      console.error("Token verification failed:", err);
-      res.status(400).send({ message: "Invalid or expired token!" });
-      return;
+      console.error("Error resetting password:", err);
+      res.status(500).send({ message: "An internal server error occurred!" });
     }
-
-    console.log("Token decoded:", decoded);
-
-    // Check if the promotor exists
-    const promotor = await prisma.promotor.findUnique({
-      where: { id: decoded.id },
-    });
-
-    if (!promotor) {
-      res.status(404).send({ message: "Promotor not found!" });
-      return;
-    }
-
-    // Hash the new password
-    const salt = await genSalt(10);
-    const hashedPassword = await hash(newPassword, salt);
-
-    // Update the promotor's password
-    await prisma.promotor.update({
-      where: { id: promotor.id },
-      data: { password: hashedPassword },
-    });
-
-    res.status(200).send({ message: "Password has been reset successfully!" });
-  } catch (err) {
-    console.error("Error resetting password:", err);
-    res.status(500).send({ message: "An internal server error occurred!" });
   }
-}
-
 }

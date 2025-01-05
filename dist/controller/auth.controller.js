@@ -117,6 +117,15 @@ class AuthController {
                     res.status(201).send({ message: "Reqister Successfully ✅" });
                     return;
                 }
+<<<<<<< HEAD
+                //   if (referrer) {
+                // if (!referrer) throw { message: "Invalid Referral Code !" };
+                // newUser.percentage = coupon.percentage;
+                // newUser.id = coupon.id;
+                //   newUser.referred_by = referrer.id;
+                //   }
+=======
+>>>>>>> 5545d0e6f7243d225aaf9ff361beb5157410fc40
             }
             catch (err) {
                 console.log(err);
@@ -216,7 +225,11 @@ class AuthController {
                 const isValidPass = yield (0, bcrypt_1.compare)(password, promotor.password);
                 if (!isValidPass)
                     throw { message: "Incorrect Password !" };
+<<<<<<< HEAD
+                const payload = { id: user.id, type: "user" };
+=======
                 const payload = { id: promotor.id, type: "promotor" };
+>>>>>>> 5545d0e6f7243d225aaf9ff361beb5157410fc40
                 const token = (0, jsonwebtoken_1.sign)(payload, process.env.JWT_KEY, { expiresIn: "1d" });
                 res.status(200).send({
                     message: "Login Successfully ✅",

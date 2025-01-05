@@ -114,7 +114,11 @@ class EventController {
                     throw { message: "thumbnail empty" };
                 const { secure_url } = yield (0, cloudinary_1.cloudinaryUpload)(req.file, "event");
                 const { title, slug, date, time, location, venue, category, description, terms, promotorId, } = req.body;
+<<<<<<< HEAD
+                yield prisma_1.default.event.create({
+=======
                 const event = yield prisma_1.default.event.create({
+>>>>>>> 5545d0e6f7243d225aaf9ff361beb5157410fc40
                     data: {
                         thumbnail: secure_url,
                         title,
@@ -129,7 +133,11 @@ class EventController {
                         promotorId,
                     },
                 });
+<<<<<<< HEAD
+                res.status(200).send({ message: "event created" });
+=======
                 res.status(200).send({ message: "Event created", id: event.id });
+>>>>>>> 5545d0e6f7243d225aaf9ff361beb5157410fc40
             }
             catch (err) {
                 console.log(err);
