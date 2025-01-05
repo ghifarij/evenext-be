@@ -41,12 +41,17 @@ class EventController {
     getAllEvents(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { page = 1, limit = 9 } = req.query;
+                const { search, page = 1, limit = 9 } = req.query;
+                const filter = {};
+                if (search) {
+                    filter.title = { contains: search, mode: "insensitive" };
+                }
                 const countEvents = yield prisma_1.default.event.aggregate({
                     _count: { _all: true },
                 });
                 const totalPage = Math.ceil(countEvents._count._all / +limit);
                 const events = yield prisma_1.default.event.findMany({
+                    where: filter,
                     orderBy: { id: "asc" },
                     take: +limit,
                     skip: +limit * (+page - 1),
@@ -109,7 +114,11 @@ class EventController {
                     throw { message: "thumbnail empty" };
                 const { secure_url } = yield (0, cloudinary_1.cloudinaryUpload)(req.file, "event");
                 const { title, slug, date, time, location, venue, category, description, terms, promotorId, } = req.body;
+<<<<<<< HEAD
                 yield prisma_1.default.event.create({
+=======
+                const event = yield prisma_1.default.event.create({
+>>>>>>> 5545d0e6f7243d225aaf9ff361beb5157410fc40
                     data: {
                         thumbnail: secure_url,
                         title,
@@ -124,7 +133,11 @@ class EventController {
                         promotorId,
                     },
                 });
+<<<<<<< HEAD
                 res.status(200).send({ message: "event created" });
+=======
+                res.status(200).send({ message: "Event created", id: event.id });
+>>>>>>> 5545d0e6f7243d225aaf9ff361beb5157410fc40
             }
             catch (err) {
                 console.log(err);

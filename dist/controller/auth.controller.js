@@ -117,12 +117,15 @@ class AuthController {
                     res.status(201).send({ message: "Reqister Successfully ✅" });
                     return;
                 }
+<<<<<<< HEAD
                 //   if (referrer) {
                 // if (!referrer) throw { message: "Invalid Referral Code !" };
                 // newUser.percentage = coupon.percentage;
                 // newUser.id = coupon.id;
                 //   newUser.referred_by = referrer.id;
                 //   }
+=======
+>>>>>>> 5545d0e6f7243d225aaf9ff361beb5157410fc40
             }
             catch (err) {
                 console.log(err);
@@ -142,20 +145,11 @@ class AuthController {
                 const isValidPass = yield (0, bcrypt_1.compare)(password, user.password);
                 if (!isValidPass)
                     throw { message: "Incorrect Password !" };
-                const payload = { id: user.id, role: user };
+                const payload = { id: user.id, type: "user" };
                 const token = (0, jsonwebtoken_1.sign)(payload, process.env.JWT_KEY, { expiresIn: "1d" });
-                res
-                    .status(200)
-                    .cookie("token", token, {
-                    httpOnly: true,
-                    secure: true,
-                    sameSite: "none",
-                    maxAge: 24 * 3600 * 1000,
-                    path: "/",
-                })
-                    .send({
+                res.status(200).send({
                     message: "Login Successfully ✅",
-                    user,
+                    token,
                 });
             }
             catch (err) {
@@ -189,26 +183,26 @@ class AuthController {
                 const { password, confirmPassword, username, email } = req.body;
                 if (password != confirmPassword)
                     throw { message: "Password not match!" };
-                const user = yield (0, user_service_1.findUser)(username, email);
-                if (user)
+                const promotor = yield (0, promotor_service_1.findPromotor)(username, email);
+                if (promotor)
                     throw { message: "Username or email has been used !" };
                 const salt = yield (0, bcrypt_1.genSalt)(10);
                 const hashPassword = yield (0, bcrypt_1.hash)(password, salt);
-                const newUser = yield prisma_1.default.user.create({
+                const newPromotor = yield prisma_1.default.promotor.create({
                     data: { username, email, password: hashPassword },
                 });
-                const payload = { id: newUser.id };
+                const payload = { id: newPromotor.id };
                 console.log(payload);
                 const token = (0, jsonwebtoken_1.sign)(payload, process.env.JWT_KEY, { expiresIn: "10m" });
-                const linkUser = `${process.env.BASE_URL_FE}/verify/${token}`;
-                const templatePath = path_1.default.join(__dirname, "../templates", "verifyUser.hbs");
+                const linkPromotor = `${process.env.BASE_URL_FE}/verifyPro/${token}`;
+                const templatePath = path_1.default.join(__dirname, "../templates", "verifyPromotor.hbs");
                 const tempateSource = fs_1.default.readFileSync(templatePath, "utf-8");
                 const compiledTemplate = handlebars_1.default.compile(tempateSource);
-                const html = compiledTemplate({ username, linkUser });
+                const html = compiledTemplate({ username, linkPromotor });
                 yield mailer_1.transporter.sendMail({
                     from: "evenext.corp@gmail.com",
                     to: email,
-                    subject: "Welcome to Evenext !",
+                    subject: "Welcome to Evenext Promotor !",
                     html,
                 });
                 res.status(201).send({ message: "Reqister Successfully ✅" });
@@ -223,15 +217,19 @@ class AuthController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { data, password } = req.body;
-                const user = yield (0, user_service_1.findUser)(data, data);
-                if (!user)
+                const promotor = yield (0, promotor_service_1.findPromotor)(data, data);
+                if (!promotor)
                     throw { message: "Account Not Found !" };
-                if (!user.isVerify)
+                if (!promotor.isVerify)
                     throw { message: "Account Not Verify !" };
-                const isValidPass = yield (0, bcrypt_1.compare)(password, user.password);
+                const isValidPass = yield (0, bcrypt_1.compare)(password, promotor.password);
                 if (!isValidPass)
                     throw { message: "Incorrect Password !" };
+<<<<<<< HEAD
                 const payload = { id: user.id, type: "user" };
+=======
+                const payload = { id: promotor.id, type: "promotor" };
+>>>>>>> 5545d0e6f7243d225aaf9ff361beb5157410fc40
                 const token = (0, jsonwebtoken_1.sign)(payload, process.env.JWT_KEY, { expiresIn: "1d" });
                 res.status(200).send({
                     message: "Login Successfully ✅",
@@ -249,7 +247,7 @@ class AuthController {
             try {
                 const { token } = req.params;
                 const verifiedPromotor = (0, jsonwebtoken_1.verify)(token, process.env.JWT_KEY);
-                yield prisma_1.default.user.update({
+                yield prisma_1.default.promotor.update({
                     data: { isVerify: true },
                     where: { id: verifiedPromotor.id },
                 });

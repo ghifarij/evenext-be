@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../prisma";
 import { cloudinaryUpload } from "../services/cloudinary";
+import { Prisma } from "../../prisma/generated/client";
 
 export class EventController {
   async getEvents(req: Request, res: Response) {
@@ -25,7 +26,12 @@ export class EventController {
 
   async getAllEvents(req: Request, res: Response) {
     try {
-      const { page = 1, limit = 9 } = req.query;
+      const { search, page = 1, limit = 9 } = req.query;
+
+      const filter: Prisma.EventWhereInput = {};
+      if (search) {
+        filter.title = { contains: search as string, mode: "insensitive" };
+      }
 
       const countEvents = await prisma.event.aggregate({
         _count: { _all: true },
@@ -33,6 +39,7 @@ export class EventController {
       const totalPage = Math.ceil(countEvents._count._all / +limit);
 
       const events = await prisma.event.findMany({
+        where: filter,
         orderBy: { id: "asc" },
         take: +limit,
         skip: +limit * (+page - 1),
@@ -102,7 +109,7 @@ export class EventController {
         promotorId,
       } = req.body;
 
-      await prisma.event.create({
+      const event = await prisma.event.create({
         data: {
           thumbnail: secure_url,
           title,
@@ -118,7 +125,7 @@ export class EventController {
         },
       });
 
-      res.status(200).send({ message: "event created" });
+      res.status(200).send({ message: "Event created", id: event.id });
     } catch (err) {
       console.log(err);
       res.status(400).send(err);

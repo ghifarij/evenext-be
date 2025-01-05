@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { TicketController } from "../controller/ticket.controller";
+import { asyncHandler } from "../middlewares/asyncHandler";
 
 export class TicketRouter {
   private ticketController: TicketController;
@@ -13,6 +14,11 @@ export class TicketRouter {
 
   private initializeRoutes() {
     this.router.get("/", this.ticketController.getTickets);
+
+    this.router.post(
+      "/:eventId",
+      asyncHandler(this.ticketController.createTicket)
+    );
   }
 
   getRouter(): Router {
