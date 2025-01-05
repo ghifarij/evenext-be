@@ -292,10 +292,15 @@ class AuthController {
                             email: true,
                             avatar: true,
                             createdAt: true,
-                            User_Point: true,
                             ref_code: true,
                             updatedAt: true,
                             isVerify: true,
+                            User_Point: {
+                                select: {
+                                    point: true,
+                                    expiredAt: true,
+                                },
+                            },
                             User_Coupon: {
                                 select: {
                                     percentage: true,
@@ -308,6 +313,8 @@ class AuthController {
                         res.status(404).send({ message: "User not found" });
                         return;
                     }
+                    // Calculate total points
+                    const totalPoints = user.User_Point.reduce((sum, point) => sum + point.point, 0);
                     res.status(200).json({
                         id: user.id,
                         type: "user",
@@ -315,6 +322,7 @@ class AuthController {
                         email: user.email,
                         avatar: user.avatar,
                         User_Point: user.User_Point,
+                        totalPoints, // Include the calculated total points
                         ref_code: user.ref_code,
                         User_Coupon: user.User_Coupon,
                     });
@@ -324,7 +332,7 @@ class AuthController {
                 }
             }
             catch (err) {
-                console.error("Error fetching session:");
+                console.error("Error fetching session:", err);
                 res
                     .status(401)
                     .send({ message: "Unauthorized: Invalid or expired token" });
