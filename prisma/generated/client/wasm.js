@@ -189,10 +189,10 @@ exports.Prisma.OrderScalarFieldEnum = {
   total_price: 'total_price',
   final_price: 'final_price',
   status: 'status',
+  redirect_url: 'redirect_url',
   createdAt: 'createdAt',
-  userId: 'userId',
-  eventId: 'eventId',
-  payment_proof: 'payment_proof'
+  expiredAt: 'expiredAt',
+  userId: 'userId'
 };
 
 exports.Prisma.Order_DetailsScalarFieldEnum = {

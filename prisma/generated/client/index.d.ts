@@ -1680,13 +1680,11 @@ export namespace Prisma {
 
   export type EventCountOutputType = {
     Ticket: number
-    Order: number
     Review: number
   }
 
   export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Ticket?: boolean | EventCountOutputTypeCountTicketArgs
-    Order?: boolean | EventCountOutputTypeCountOrderArgs
     Review?: boolean | EventCountOutputTypeCountReviewArgs
   }
 
@@ -1706,13 +1704,6 @@ export namespace Prisma {
    */
   export type EventCountOutputTypeCountTicketArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TicketWhereInput
-  }
-
-  /**
-   * EventCountOutputType without action
-   */
-  export type EventCountOutputTypeCountOrderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrderWhereInput
   }
 
   /**
@@ -6083,7 +6074,6 @@ export namespace Prisma {
     promotorId?: boolean
     promotor?: boolean | PromotorDefaultArgs<ExtArgs>
     Ticket?: boolean | Event$TicketArgs<ExtArgs>
-    Order?: boolean | Event$OrderArgs<ExtArgs>
     Review?: boolean | Event$ReviewArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
@@ -6124,7 +6114,6 @@ export namespace Prisma {
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     promotor?: boolean | PromotorDefaultArgs<ExtArgs>
     Ticket?: boolean | Event$TicketArgs<ExtArgs>
-    Order?: boolean | Event$OrderArgs<ExtArgs>
     Review?: boolean | Event$ReviewArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -6137,7 +6126,6 @@ export namespace Prisma {
     objects: {
       promotor: Prisma.$PromotorPayload<ExtArgs>
       Ticket: Prisma.$TicketPayload<ExtArgs>[]
-      Order: Prisma.$OrderPayload<ExtArgs>[]
       Review: Prisma.$ReviewPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -6520,7 +6508,6 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     promotor<T extends PromotorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PromotorDefaultArgs<ExtArgs>>): Prisma__PromotorClient<$Result.GetResult<Prisma.$PromotorPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     Ticket<T extends Event$TicketArgs<ExtArgs> = {}>(args?: Subset<T, Event$TicketArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findMany"> | Null>
-    Order<T extends Event$OrderArgs<ExtArgs> = {}>(args?: Subset<T, Event$OrderArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany"> | Null>
     Review<T extends Event$ReviewArgs<ExtArgs> = {}>(args?: Subset<T, Event$ReviewArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -6899,26 +6886,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TicketScalarFieldEnum | TicketScalarFieldEnum[]
-  }
-
-  /**
-   * Event.Order
-   */
-  export type Event$OrderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Order
-     */
-    select?: OrderSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrderInclude<ExtArgs> | null
-    where?: OrderWhereInput
-    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
-    cursor?: OrderWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
   }
 
   /**
@@ -7989,14 +7956,12 @@ export namespace Prisma {
     id: number | null
     total_price: number | null
     final_price: number | null
-    eventId: number | null
   }
 
   export type OrderSumAggregateOutputType = {
     id: number | null
     total_price: number | null
     final_price: number | null
-    eventId: number | null
   }
 
   export type OrderMinAggregateOutputType = {
@@ -8004,10 +7969,10 @@ export namespace Prisma {
     total_price: number | null
     final_price: number | null
     status: $Enums.StatusOrder | null
+    redirect_url: string | null
     createdAt: Date | null
+    expiredAt: Date | null
     userId: string | null
-    eventId: number | null
-    payment_proof: string | null
   }
 
   export type OrderMaxAggregateOutputType = {
@@ -8015,10 +7980,10 @@ export namespace Prisma {
     total_price: number | null
     final_price: number | null
     status: $Enums.StatusOrder | null
+    redirect_url: string | null
     createdAt: Date | null
+    expiredAt: Date | null
     userId: string | null
-    eventId: number | null
-    payment_proof: string | null
   }
 
   export type OrderCountAggregateOutputType = {
@@ -8026,10 +7991,10 @@ export namespace Prisma {
     total_price: number
     final_price: number
     status: number
+    redirect_url: number
     createdAt: number
+    expiredAt: number
     userId: number
-    eventId: number
-    payment_proof: number
     _all: number
   }
 
@@ -8038,14 +8003,12 @@ export namespace Prisma {
     id?: true
     total_price?: true
     final_price?: true
-    eventId?: true
   }
 
   export type OrderSumAggregateInputType = {
     id?: true
     total_price?: true
     final_price?: true
-    eventId?: true
   }
 
   export type OrderMinAggregateInputType = {
@@ -8053,10 +8016,10 @@ export namespace Prisma {
     total_price?: true
     final_price?: true
     status?: true
+    redirect_url?: true
     createdAt?: true
+    expiredAt?: true
     userId?: true
-    eventId?: true
-    payment_proof?: true
   }
 
   export type OrderMaxAggregateInputType = {
@@ -8064,10 +8027,10 @@ export namespace Prisma {
     total_price?: true
     final_price?: true
     status?: true
+    redirect_url?: true
     createdAt?: true
+    expiredAt?: true
     userId?: true
-    eventId?: true
-    payment_proof?: true
   }
 
   export type OrderCountAggregateInputType = {
@@ -8075,10 +8038,10 @@ export namespace Prisma {
     total_price?: true
     final_price?: true
     status?: true
+    redirect_url?: true
     createdAt?: true
+    expiredAt?: true
     userId?: true
-    eventId?: true
-    payment_proof?: true
     _all?: true
   }
 
@@ -8173,10 +8136,10 @@ export namespace Prisma {
     total_price: number
     final_price: number
     status: $Enums.StatusOrder
+    redirect_url: string | null
     createdAt: Date
+    expiredAt: Date
     userId: string
-    eventId: number
-    payment_proof: string | null
     _count: OrderCountAggregateOutputType | null
     _avg: OrderAvgAggregateOutputType | null
     _sum: OrderSumAggregateOutputType | null
@@ -8203,12 +8166,11 @@ export namespace Prisma {
     total_price?: boolean
     final_price?: boolean
     status?: boolean
+    redirect_url?: boolean
     createdAt?: boolean
+    expiredAt?: boolean
     userId?: boolean
-    eventId?: boolean
-    payment_proof?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    event?: boolean | EventDefaultArgs<ExtArgs>
     Order_Details?: boolean | Order$Order_DetailsArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
@@ -8218,12 +8180,11 @@ export namespace Prisma {
     total_price?: boolean
     final_price?: boolean
     status?: boolean
+    redirect_url?: boolean
     createdAt?: boolean
+    expiredAt?: boolean
     userId?: boolean
-    eventId?: boolean
-    payment_proof?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    event?: boolean | EventDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectScalar = {
@@ -8231,28 +8192,25 @@ export namespace Prisma {
     total_price?: boolean
     final_price?: boolean
     status?: boolean
+    redirect_url?: boolean
     createdAt?: boolean
+    expiredAt?: boolean
     userId?: boolean
-    eventId?: boolean
-    payment_proof?: boolean
   }
 
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    event?: boolean | EventDefaultArgs<ExtArgs>
     Order_Details?: boolean | Order$Order_DetailsArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    event?: boolean | EventDefaultArgs<ExtArgs>
   }
 
   export type $OrderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Order"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
-      event: Prisma.$EventPayload<ExtArgs>
       Order_Details: Prisma.$Order_DetailsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -8260,10 +8218,10 @@ export namespace Prisma {
       total_price: number
       final_price: number
       status: $Enums.StatusOrder
+      redirect_url: string | null
       createdAt: Date
+      expiredAt: Date
       userId: string
-      eventId: number
-      payment_proof: string | null
     }, ExtArgs["result"]["order"]>
     composites: {}
   }
@@ -8629,7 +8587,6 @@ export namespace Prisma {
   export interface Prisma__OrderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
-    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     Order_Details<T extends Order$Order_DetailsArgs<ExtArgs> = {}>(args?: Subset<T, Order$Order_DetailsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Order_DetailsPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -8664,10 +8621,10 @@ export namespace Prisma {
     readonly total_price: FieldRef<"Order", 'Int'>
     readonly final_price: FieldRef<"Order", 'Int'>
     readonly status: FieldRef<"Order", 'StatusOrder'>
+    readonly redirect_url: FieldRef<"Order", 'String'>
     readonly createdAt: FieldRef<"Order", 'DateTime'>
+    readonly expiredAt: FieldRef<"Order", 'DateTime'>
     readonly userId: FieldRef<"Order", 'String'>
-    readonly eventId: FieldRef<"Order", 'Int'>
-    readonly payment_proof: FieldRef<"Order", 'String'>
   }
     
 
@@ -11078,10 +11035,10 @@ export namespace Prisma {
     total_price: 'total_price',
     final_price: 'final_price',
     status: 'status',
+    redirect_url: 'redirect_url',
     createdAt: 'createdAt',
-    userId: 'userId',
-    eventId: 'eventId',
-    payment_proof: 'payment_proof'
+    expiredAt: 'expiredAt',
+    userId: 'userId'
   };
 
   export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
@@ -11561,7 +11518,6 @@ export namespace Prisma {
     promotorId?: StringFilter<"Event"> | string
     promotor?: XOR<PromotorScalarRelationFilter, PromotorWhereInput>
     Ticket?: TicketListRelationFilter
-    Order?: OrderListRelationFilter
     Review?: ReviewListRelationFilter
   }
 
@@ -11581,7 +11537,6 @@ export namespace Prisma {
     promotorId?: SortOrder
     promotor?: PromotorOrderByWithRelationInput
     Ticket?: TicketOrderByRelationAggregateInput
-    Order?: OrderOrderByRelationAggregateInput
     Review?: ReviewOrderByRelationAggregateInput
   }
 
@@ -11604,7 +11559,6 @@ export namespace Prisma {
     promotorId?: StringFilter<"Event"> | string
     promotor?: XOR<PromotorScalarRelationFilter, PromotorWhereInput>
     Ticket?: TicketListRelationFilter
-    Order?: OrderListRelationFilter
     Review?: ReviewListRelationFilter
   }, "id" | "title" | "slug">
 
@@ -11721,12 +11675,11 @@ export namespace Prisma {
     total_price?: IntFilter<"Order"> | number
     final_price?: IntFilter<"Order"> | number
     status?: EnumStatusOrderFilter<"Order"> | $Enums.StatusOrder
+    redirect_url?: StringNullableFilter<"Order"> | string | null
     createdAt?: DateTimeFilter<"Order"> | Date | string
+    expiredAt?: DateTimeFilter<"Order"> | Date | string
     userId?: StringFilter<"Order"> | string
-    eventId?: IntFilter<"Order"> | number
-    payment_proof?: StringNullableFilter<"Order"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    event?: XOR<EventScalarRelationFilter, EventWhereInput>
     Order_Details?: Order_DetailsListRelationFilter
   }
 
@@ -11735,12 +11688,11 @@ export namespace Prisma {
     total_price?: SortOrder
     final_price?: SortOrder
     status?: SortOrder
+    redirect_url?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    expiredAt?: SortOrder
     userId?: SortOrder
-    eventId?: SortOrder
-    payment_proof?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
-    event?: EventOrderByWithRelationInput
     Order_Details?: Order_DetailsOrderByRelationAggregateInput
   }
 
@@ -11752,12 +11704,11 @@ export namespace Prisma {
     total_price?: IntFilter<"Order"> | number
     final_price?: IntFilter<"Order"> | number
     status?: EnumStatusOrderFilter<"Order"> | $Enums.StatusOrder
+    redirect_url?: StringNullableFilter<"Order"> | string | null
     createdAt?: DateTimeFilter<"Order"> | Date | string
+    expiredAt?: DateTimeFilter<"Order"> | Date | string
     userId?: StringFilter<"Order"> | string
-    eventId?: IntFilter<"Order"> | number
-    payment_proof?: StringNullableFilter<"Order"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    event?: XOR<EventScalarRelationFilter, EventWhereInput>
     Order_Details?: Order_DetailsListRelationFilter
   }, "id">
 
@@ -11766,10 +11717,10 @@ export namespace Prisma {
     total_price?: SortOrder
     final_price?: SortOrder
     status?: SortOrder
+    redirect_url?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    expiredAt?: SortOrder
     userId?: SortOrder
-    eventId?: SortOrder
-    payment_proof?: SortOrderInput | SortOrder
     _count?: OrderCountOrderByAggregateInput
     _avg?: OrderAvgOrderByAggregateInput
     _max?: OrderMaxOrderByAggregateInput
@@ -11785,10 +11736,10 @@ export namespace Prisma {
     total_price?: IntWithAggregatesFilter<"Order"> | number
     final_price?: IntWithAggregatesFilter<"Order"> | number
     status?: EnumStatusOrderWithAggregatesFilter<"Order"> | $Enums.StatusOrder
+    redirect_url?: StringNullableWithAggregatesFilter<"Order"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
+    expiredAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
     userId?: StringWithAggregatesFilter<"Order"> | string
-    eventId?: IntWithAggregatesFilter<"Order"> | number
-    payment_proof?: StringNullableWithAggregatesFilter<"Order"> | string | null
   }
 
   export type Order_DetailsWhereInput = {
@@ -12226,7 +12177,6 @@ export namespace Prisma {
     createdAt?: Date | string
     promotor: PromotorCreateNestedOneWithoutEventInput
     Ticket?: TicketCreateNestedManyWithoutEventInput
-    Order?: OrderCreateNestedManyWithoutEventInput
     Review?: ReviewCreateNestedManyWithoutEventInput
   }
 
@@ -12245,7 +12195,6 @@ export namespace Prisma {
     createdAt?: Date | string
     promotorId: string
     Ticket?: TicketUncheckedCreateNestedManyWithoutEventInput
-    Order?: OrderUncheckedCreateNestedManyWithoutEventInput
     Review?: ReviewUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -12263,7 +12212,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     promotor?: PromotorUpdateOneRequiredWithoutEventNestedInput
     Ticket?: TicketUpdateManyWithoutEventNestedInput
-    Order?: OrderUpdateManyWithoutEventNestedInput
     Review?: ReviewUpdateManyWithoutEventNestedInput
   }
 
@@ -12282,7 +12230,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     promotorId?: StringFieldUpdateOperationsInput | string
     Ticket?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    Order?: OrderUncheckedUpdateManyWithoutEventNestedInput
     Review?: ReviewUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -12399,10 +12346,10 @@ export namespace Prisma {
     total_price: number
     final_price: number
     status: $Enums.StatusOrder
+    redirect_url?: string | null
     createdAt?: Date | string
-    payment_proof?: string | null
+    expiredAt: Date | string
     user: UserCreateNestedOneWithoutOrderInput
-    event: EventCreateNestedOneWithoutOrderInput
     Order_Details?: Order_DetailsCreateNestedManyWithoutOrderInput
   }
 
@@ -12411,10 +12358,10 @@ export namespace Prisma {
     total_price: number
     final_price: number
     status: $Enums.StatusOrder
+    redirect_url?: string | null
     createdAt?: Date | string
+    expiredAt: Date | string
     userId: string
-    eventId: number
-    payment_proof?: string | null
     Order_Details?: Order_DetailsUncheckedCreateNestedManyWithoutOrderInput
   }
 
@@ -12422,10 +12369,10 @@ export namespace Prisma {
     total_price?: IntFieldUpdateOperationsInput | number
     final_price?: IntFieldUpdateOperationsInput | number
     status?: EnumStatusOrderFieldUpdateOperationsInput | $Enums.StatusOrder
+    redirect_url?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    payment_proof?: NullableStringFieldUpdateOperationsInput | string | null
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrderNestedInput
-    event?: EventUpdateOneRequiredWithoutOrderNestedInput
     Order_Details?: Order_DetailsUpdateManyWithoutOrderNestedInput
   }
 
@@ -12434,10 +12381,10 @@ export namespace Prisma {
     total_price?: IntFieldUpdateOperationsInput | number
     final_price?: IntFieldUpdateOperationsInput | number
     status?: EnumStatusOrderFieldUpdateOperationsInput | $Enums.StatusOrder
+    redirect_url?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
-    eventId?: IntFieldUpdateOperationsInput | number
-    payment_proof?: NullableStringFieldUpdateOperationsInput | string | null
     Order_Details?: Order_DetailsUncheckedUpdateManyWithoutOrderNestedInput
   }
 
@@ -12446,18 +12393,19 @@ export namespace Prisma {
     total_price: number
     final_price: number
     status: $Enums.StatusOrder
+    redirect_url?: string | null
     createdAt?: Date | string
+    expiredAt: Date | string
     userId: string
-    eventId: number
-    payment_proof?: string | null
   }
 
   export type OrderUpdateManyMutationInput = {
     total_price?: IntFieldUpdateOperationsInput | number
     final_price?: IntFieldUpdateOperationsInput | number
     status?: EnumStatusOrderFieldUpdateOperationsInput | $Enums.StatusOrder
+    redirect_url?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    payment_proof?: NullableStringFieldUpdateOperationsInput | string | null
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OrderUncheckedUpdateManyInput = {
@@ -12465,10 +12413,10 @@ export namespace Prisma {
     total_price?: IntFieldUpdateOperationsInput | number
     final_price?: IntFieldUpdateOperationsInput | number
     status?: EnumStatusOrderFieldUpdateOperationsInput | $Enums.StatusOrder
+    redirect_url?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
-    eventId?: IntFieldUpdateOperationsInput | number
-    payment_proof?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type Order_DetailsCreateInput = {
@@ -13093,17 +13041,16 @@ export namespace Prisma {
     total_price?: SortOrder
     final_price?: SortOrder
     status?: SortOrder
+    redirect_url?: SortOrder
     createdAt?: SortOrder
+    expiredAt?: SortOrder
     userId?: SortOrder
-    eventId?: SortOrder
-    payment_proof?: SortOrder
   }
 
   export type OrderAvgOrderByAggregateInput = {
     id?: SortOrder
     total_price?: SortOrder
     final_price?: SortOrder
-    eventId?: SortOrder
   }
 
   export type OrderMaxOrderByAggregateInput = {
@@ -13111,10 +13058,10 @@ export namespace Prisma {
     total_price?: SortOrder
     final_price?: SortOrder
     status?: SortOrder
+    redirect_url?: SortOrder
     createdAt?: SortOrder
+    expiredAt?: SortOrder
     userId?: SortOrder
-    eventId?: SortOrder
-    payment_proof?: SortOrder
   }
 
   export type OrderMinOrderByAggregateInput = {
@@ -13122,17 +13069,16 @@ export namespace Prisma {
     total_price?: SortOrder
     final_price?: SortOrder
     status?: SortOrder
+    redirect_url?: SortOrder
     createdAt?: SortOrder
+    expiredAt?: SortOrder
     userId?: SortOrder
-    eventId?: SortOrder
-    payment_proof?: SortOrder
   }
 
   export type OrderSumOrderByAggregateInput = {
     id?: SortOrder
     total_price?: SortOrder
     final_price?: SortOrder
-    eventId?: SortOrder
   }
 
   export type EnumStatusOrderWithAggregatesFilter<$PrismaModel = never> = {
@@ -13501,13 +13447,6 @@ export namespace Prisma {
     connect?: TicketWhereUniqueInput | TicketWhereUniqueInput[]
   }
 
-  export type OrderCreateNestedManyWithoutEventInput = {
-    create?: XOR<OrderCreateWithoutEventInput, OrderUncheckedCreateWithoutEventInput> | OrderCreateWithoutEventInput[] | OrderUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutEventInput | OrderCreateOrConnectWithoutEventInput[]
-    createMany?: OrderCreateManyEventInputEnvelope
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-  }
-
   export type ReviewCreateNestedManyWithoutEventInput = {
     create?: XOR<ReviewCreateWithoutEventInput, ReviewUncheckedCreateWithoutEventInput> | ReviewCreateWithoutEventInput[] | ReviewUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ReviewCreateOrConnectWithoutEventInput | ReviewCreateOrConnectWithoutEventInput[]
@@ -13520,13 +13459,6 @@ export namespace Prisma {
     connectOrCreate?: TicketCreateOrConnectWithoutEventInput | TicketCreateOrConnectWithoutEventInput[]
     createMany?: TicketCreateManyEventInputEnvelope
     connect?: TicketWhereUniqueInput | TicketWhereUniqueInput[]
-  }
-
-  export type OrderUncheckedCreateNestedManyWithoutEventInput = {
-    create?: XOR<OrderCreateWithoutEventInput, OrderUncheckedCreateWithoutEventInput> | OrderCreateWithoutEventInput[] | OrderUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutEventInput | OrderCreateOrConnectWithoutEventInput[]
-    createMany?: OrderCreateManyEventInputEnvelope
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
   }
 
   export type ReviewUncheckedCreateNestedManyWithoutEventInput = {
@@ -13566,20 +13498,6 @@ export namespace Prisma {
     deleteMany?: TicketScalarWhereInput | TicketScalarWhereInput[]
   }
 
-  export type OrderUpdateManyWithoutEventNestedInput = {
-    create?: XOR<OrderCreateWithoutEventInput, OrderUncheckedCreateWithoutEventInput> | OrderCreateWithoutEventInput[] | OrderUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutEventInput | OrderCreateOrConnectWithoutEventInput[]
-    upsert?: OrderUpsertWithWhereUniqueWithoutEventInput | OrderUpsertWithWhereUniqueWithoutEventInput[]
-    createMany?: OrderCreateManyEventInputEnvelope
-    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    update?: OrderUpdateWithWhereUniqueWithoutEventInput | OrderUpdateWithWhereUniqueWithoutEventInput[]
-    updateMany?: OrderUpdateManyWithWhereWithoutEventInput | OrderUpdateManyWithWhereWithoutEventInput[]
-    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
-  }
-
   export type ReviewUpdateManyWithoutEventNestedInput = {
     create?: XOR<ReviewCreateWithoutEventInput, ReviewUncheckedCreateWithoutEventInput> | ReviewCreateWithoutEventInput[] | ReviewUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ReviewCreateOrConnectWithoutEventInput | ReviewCreateOrConnectWithoutEventInput[]
@@ -13606,20 +13524,6 @@ export namespace Prisma {
     update?: TicketUpdateWithWhereUniqueWithoutEventInput | TicketUpdateWithWhereUniqueWithoutEventInput[]
     updateMany?: TicketUpdateManyWithWhereWithoutEventInput | TicketUpdateManyWithWhereWithoutEventInput[]
     deleteMany?: TicketScalarWhereInput | TicketScalarWhereInput[]
-  }
-
-  export type OrderUncheckedUpdateManyWithoutEventNestedInput = {
-    create?: XOR<OrderCreateWithoutEventInput, OrderUncheckedCreateWithoutEventInput> | OrderCreateWithoutEventInput[] | OrderUncheckedCreateWithoutEventInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutEventInput | OrderCreateOrConnectWithoutEventInput[]
-    upsert?: OrderUpsertWithWhereUniqueWithoutEventInput | OrderUpsertWithWhereUniqueWithoutEventInput[]
-    createMany?: OrderCreateManyEventInputEnvelope
-    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    update?: OrderUpdateWithWhereUniqueWithoutEventInput | OrderUpdateWithWhereUniqueWithoutEventInput[]
-    updateMany?: OrderUpdateManyWithWhereWithoutEventInput | OrderUpdateManyWithWhereWithoutEventInput[]
-    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
   export type ReviewUncheckedUpdateManyWithoutEventNestedInput = {
@@ -13702,12 +13606,6 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type EventCreateNestedOneWithoutOrderInput = {
-    create?: XOR<EventCreateWithoutOrderInput, EventUncheckedCreateWithoutOrderInput>
-    connectOrCreate?: EventCreateOrConnectWithoutOrderInput
-    connect?: EventWhereUniqueInput
-  }
-
   export type Order_DetailsCreateNestedManyWithoutOrderInput = {
     create?: XOR<Order_DetailsCreateWithoutOrderInput, Order_DetailsUncheckedCreateWithoutOrderInput> | Order_DetailsCreateWithoutOrderInput[] | Order_DetailsUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: Order_DetailsCreateOrConnectWithoutOrderInput | Order_DetailsCreateOrConnectWithoutOrderInput[]
@@ -13732,14 +13630,6 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutOrderInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrderInput, UserUpdateWithoutOrderInput>, UserUncheckedUpdateWithoutOrderInput>
-  }
-
-  export type EventUpdateOneRequiredWithoutOrderNestedInput = {
-    create?: XOR<EventCreateWithoutOrderInput, EventUncheckedCreateWithoutOrderInput>
-    connectOrCreate?: EventCreateOrConnectWithoutOrderInput
-    upsert?: EventUpsertWithoutOrderInput
-    connect?: EventWhereUniqueInput
-    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutOrderInput, EventUpdateWithoutOrderInput>, EventUncheckedUpdateWithoutOrderInput>
   }
 
   export type Order_DetailsUpdateManyWithoutOrderNestedInput = {
@@ -14097,9 +13987,9 @@ export namespace Prisma {
     total_price: number
     final_price: number
     status: $Enums.StatusOrder
+    redirect_url?: string | null
     createdAt?: Date | string
-    payment_proof?: string | null
-    event: EventCreateNestedOneWithoutOrderInput
+    expiredAt: Date | string
     Order_Details?: Order_DetailsCreateNestedManyWithoutOrderInput
   }
 
@@ -14108,9 +13998,9 @@ export namespace Prisma {
     total_price: number
     final_price: number
     status: $Enums.StatusOrder
+    redirect_url?: string | null
     createdAt?: Date | string
-    eventId: number
-    payment_proof?: string | null
+    expiredAt: Date | string
     Order_Details?: Order_DetailsUncheckedCreateNestedManyWithoutOrderInput
   }
 
@@ -14227,10 +14117,10 @@ export namespace Prisma {
     total_price?: IntFilter<"Order"> | number
     final_price?: IntFilter<"Order"> | number
     status?: EnumStatusOrderFilter<"Order"> | $Enums.StatusOrder
+    redirect_url?: StringNullableFilter<"Order"> | string | null
     createdAt?: DateTimeFilter<"Order"> | Date | string
+    expiredAt?: DateTimeFilter<"Order"> | Date | string
     userId?: StringFilter<"Order"> | string
-    eventId?: IntFilter<"Order"> | number
-    payment_proof?: StringNullableFilter<"Order"> | string | null
   }
 
   export type ReviewUpsertWithWhereUniqueWithoutUserInput = {
@@ -14433,7 +14323,6 @@ export namespace Prisma {
     time: Date | string
     createdAt?: Date | string
     Ticket?: TicketCreateNestedManyWithoutEventInput
-    Order?: OrderCreateNestedManyWithoutEventInput
     Review?: ReviewCreateNestedManyWithoutEventInput
   }
 
@@ -14451,7 +14340,6 @@ export namespace Prisma {
     time: Date | string
     createdAt?: Date | string
     Ticket?: TicketUncheckedCreateNestedManyWithoutEventInput
-    Order?: OrderUncheckedCreateNestedManyWithoutEventInput
     Review?: ReviewUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -14554,37 +14442,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type OrderCreateWithoutEventInput = {
-    total_price: number
-    final_price: number
-    status: $Enums.StatusOrder
-    createdAt?: Date | string
-    payment_proof?: string | null
-    user: UserCreateNestedOneWithoutOrderInput
-    Order_Details?: Order_DetailsCreateNestedManyWithoutOrderInput
-  }
-
-  export type OrderUncheckedCreateWithoutEventInput = {
-    id?: number
-    total_price: number
-    final_price: number
-    status: $Enums.StatusOrder
-    createdAt?: Date | string
-    userId: string
-    payment_proof?: string | null
-    Order_Details?: Order_DetailsUncheckedCreateNestedManyWithoutOrderInput
-  }
-
-  export type OrderCreateOrConnectWithoutEventInput = {
-    where: OrderWhereUniqueInput
-    create: XOR<OrderCreateWithoutEventInput, OrderUncheckedCreateWithoutEventInput>
-  }
-
-  export type OrderCreateManyEventInputEnvelope = {
-    data: OrderCreateManyEventInput | OrderCreateManyEventInput[]
-    skipDuplicates?: boolean
-  }
-
   export type ReviewCreateWithoutEventInput = {
     description: string
     rating: number
@@ -14669,22 +14526,6 @@ export namespace Prisma {
     eventId?: IntFilter<"Ticket"> | number
   }
 
-  export type OrderUpsertWithWhereUniqueWithoutEventInput = {
-    where: OrderWhereUniqueInput
-    update: XOR<OrderUpdateWithoutEventInput, OrderUncheckedUpdateWithoutEventInput>
-    create: XOR<OrderCreateWithoutEventInput, OrderUncheckedCreateWithoutEventInput>
-  }
-
-  export type OrderUpdateWithWhereUniqueWithoutEventInput = {
-    where: OrderWhereUniqueInput
-    data: XOR<OrderUpdateWithoutEventInput, OrderUncheckedUpdateWithoutEventInput>
-  }
-
-  export type OrderUpdateManyWithWhereWithoutEventInput = {
-    where: OrderScalarWhereInput
-    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutEventInput>
-  }
-
   export type ReviewUpsertWithWhereUniqueWithoutEventInput = {
     where: ReviewWhereUniqueInput
     update: XOR<ReviewUpdateWithoutEventInput, ReviewUncheckedUpdateWithoutEventInput>
@@ -14714,7 +14555,6 @@ export namespace Prisma {
     time: Date | string
     createdAt?: Date | string
     promotor: PromotorCreateNestedOneWithoutEventInput
-    Order?: OrderCreateNestedManyWithoutEventInput
     Review?: ReviewCreateNestedManyWithoutEventInput
   }
 
@@ -14732,7 +14572,6 @@ export namespace Prisma {
     time: Date | string
     createdAt?: Date | string
     promotorId: string
-    Order?: OrderUncheckedCreateNestedManyWithoutEventInput
     Review?: ReviewUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -14786,7 +14625,6 @@ export namespace Prisma {
     time?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     promotor?: PromotorUpdateOneRequiredWithoutEventNestedInput
-    Order?: OrderUpdateManyWithoutEventNestedInput
     Review?: ReviewUpdateManyWithoutEventNestedInput
   }
 
@@ -14804,7 +14642,6 @@ export namespace Prisma {
     time?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     promotorId?: StringFieldUpdateOperationsInput | string
-    Order?: OrderUncheckedUpdateManyWithoutEventNestedInput
     Review?: ReviewUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -14871,46 +14708,6 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutOrderInput, UserUncheckedCreateWithoutOrderInput>
   }
 
-  export type EventCreateWithoutOrderInput = {
-    title: string
-    slug: string
-    thumbnail?: string
-    description: string
-    terms: string
-    category: $Enums.EventCategory
-    location: $Enums.EventLocation
-    venue: string
-    date: Date | string
-    time: Date | string
-    createdAt?: Date | string
-    promotor: PromotorCreateNestedOneWithoutEventInput
-    Ticket?: TicketCreateNestedManyWithoutEventInput
-    Review?: ReviewCreateNestedManyWithoutEventInput
-  }
-
-  export type EventUncheckedCreateWithoutOrderInput = {
-    id?: number
-    title: string
-    slug: string
-    thumbnail?: string
-    description: string
-    terms: string
-    category: $Enums.EventCategory
-    location: $Enums.EventLocation
-    venue: string
-    date: Date | string
-    time: Date | string
-    createdAt?: Date | string
-    promotorId: string
-    Ticket?: TicketUncheckedCreateNestedManyWithoutEventInput
-    Review?: ReviewUncheckedCreateNestedManyWithoutEventInput
-  }
-
-  export type EventCreateOrConnectWithoutOrderInput = {
-    where: EventWhereUniqueInput
-    create: XOR<EventCreateWithoutOrderInput, EventUncheckedCreateWithoutOrderInput>
-  }
-
   export type Order_DetailsCreateWithoutOrderInput = {
     qty: number
     ticket: TicketCreateNestedOneWithoutOrder_DetailsInput
@@ -14975,52 +14772,6 @@ export namespace Prisma {
     Review?: ReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type EventUpsertWithoutOrderInput = {
-    update: XOR<EventUpdateWithoutOrderInput, EventUncheckedUpdateWithoutOrderInput>
-    create: XOR<EventCreateWithoutOrderInput, EventUncheckedCreateWithoutOrderInput>
-    where?: EventWhereInput
-  }
-
-  export type EventUpdateToOneWithWhereWithoutOrderInput = {
-    where?: EventWhereInput
-    data: XOR<EventUpdateWithoutOrderInput, EventUncheckedUpdateWithoutOrderInput>
-  }
-
-  export type EventUpdateWithoutOrderInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    terms?: StringFieldUpdateOperationsInput | string
-    category?: EnumEventCategoryFieldUpdateOperationsInput | $Enums.EventCategory
-    location?: EnumEventLocationFieldUpdateOperationsInput | $Enums.EventLocation
-    venue?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    time?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    promotor?: PromotorUpdateOneRequiredWithoutEventNestedInput
-    Ticket?: TicketUpdateManyWithoutEventNestedInput
-    Review?: ReviewUpdateManyWithoutEventNestedInput
-  }
-
-  export type EventUncheckedUpdateWithoutOrderInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    terms?: StringFieldUpdateOperationsInput | string
-    category?: EnumEventCategoryFieldUpdateOperationsInput | $Enums.EventCategory
-    location?: EnumEventLocationFieldUpdateOperationsInput | $Enums.EventLocation
-    venue?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    time?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    promotorId?: StringFieldUpdateOperationsInput | string
-    Ticket?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    Review?: ReviewUncheckedUpdateManyWithoutEventNestedInput
-  }
-
   export type Order_DetailsUpsertWithWhereUniqueWithoutOrderInput = {
     where: Order_DetailsWhereUniqueInput
     update: XOR<Order_DetailsUpdateWithoutOrderInput, Order_DetailsUncheckedUpdateWithoutOrderInput>
@@ -15063,10 +14814,10 @@ export namespace Prisma {
     total_price: number
     final_price: number
     status: $Enums.StatusOrder
+    redirect_url?: string | null
     createdAt?: Date | string
-    payment_proof?: string | null
+    expiredAt: Date | string
     user: UserCreateNestedOneWithoutOrderInput
-    event: EventCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutOrder_DetailsInput = {
@@ -15074,10 +14825,10 @@ export namespace Prisma {
     total_price: number
     final_price: number
     status: $Enums.StatusOrder
+    redirect_url?: string | null
     createdAt?: Date | string
+    expiredAt: Date | string
     userId: string
-    eventId: number
-    payment_proof?: string | null
   }
 
   export type OrderCreateOrConnectWithoutOrder_DetailsInput = {
@@ -15128,10 +14879,10 @@ export namespace Prisma {
     total_price?: IntFieldUpdateOperationsInput | number
     final_price?: IntFieldUpdateOperationsInput | number
     status?: EnumStatusOrderFieldUpdateOperationsInput | $Enums.StatusOrder
+    redirect_url?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    payment_proof?: NullableStringFieldUpdateOperationsInput | string | null
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrderNestedInput
-    event?: EventUpdateOneRequiredWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutOrder_DetailsInput = {
@@ -15139,10 +14890,10 @@ export namespace Prisma {
     total_price?: IntFieldUpdateOperationsInput | number
     final_price?: IntFieldUpdateOperationsInput | number
     status?: EnumStatusOrderFieldUpdateOperationsInput | $Enums.StatusOrder
+    redirect_url?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
-    eventId?: IntFieldUpdateOperationsInput | number
-    payment_proof?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserCreateWithoutReviewInput = {
@@ -15196,7 +14947,6 @@ export namespace Prisma {
     createdAt?: Date | string
     promotor: PromotorCreateNestedOneWithoutEventInput
     Ticket?: TicketCreateNestedManyWithoutEventInput
-    Order?: OrderCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutReviewInput = {
@@ -15214,7 +14964,6 @@ export namespace Prisma {
     createdAt?: Date | string
     promotorId: string
     Ticket?: TicketUncheckedCreateNestedManyWithoutEventInput
-    Order?: OrderUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutReviewInput = {
@@ -15290,7 +15039,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     promotor?: PromotorUpdateOneRequiredWithoutEventNestedInput
     Ticket?: TicketUpdateManyWithoutEventNestedInput
-    Order?: OrderUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutReviewInput = {
@@ -15308,7 +15056,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     promotorId?: StringFieldUpdateOperationsInput | string
     Ticket?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    Order?: OrderUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type User_PointCreateManyUserInput = {
@@ -15332,9 +15079,9 @@ export namespace Prisma {
     total_price: number
     final_price: number
     status: $Enums.StatusOrder
+    redirect_url?: string | null
     createdAt?: Date | string
-    eventId: number
-    payment_proof?: string | null
+    expiredAt: Date | string
   }
 
   export type ReviewCreateManyUserInput = {
@@ -15394,9 +15141,9 @@ export namespace Prisma {
     total_price?: IntFieldUpdateOperationsInput | number
     final_price?: IntFieldUpdateOperationsInput | number
     status?: EnumStatusOrderFieldUpdateOperationsInput | $Enums.StatusOrder
+    redirect_url?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    payment_proof?: NullableStringFieldUpdateOperationsInput | string | null
-    event?: EventUpdateOneRequiredWithoutOrderNestedInput
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Order_Details?: Order_DetailsUpdateManyWithoutOrderNestedInput
   }
 
@@ -15405,9 +15152,9 @@ export namespace Prisma {
     total_price?: IntFieldUpdateOperationsInput | number
     final_price?: IntFieldUpdateOperationsInput | number
     status?: EnumStatusOrderFieldUpdateOperationsInput | $Enums.StatusOrder
+    redirect_url?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventId?: IntFieldUpdateOperationsInput | number
-    payment_proof?: NullableStringFieldUpdateOperationsInput | string | null
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Order_Details?: Order_DetailsUncheckedUpdateManyWithoutOrderNestedInput
   }
 
@@ -15416,9 +15163,9 @@ export namespace Prisma {
     total_price?: IntFieldUpdateOperationsInput | number
     final_price?: IntFieldUpdateOperationsInput | number
     status?: EnumStatusOrderFieldUpdateOperationsInput | $Enums.StatusOrder
+    redirect_url?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventId?: IntFieldUpdateOperationsInput | number
-    payment_proof?: NullableStringFieldUpdateOperationsInput | string | null
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ReviewUpdateWithoutUserInput = {
@@ -15469,7 +15216,6 @@ export namespace Prisma {
     time?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Ticket?: TicketUpdateManyWithoutEventNestedInput
-    Order?: OrderUpdateManyWithoutEventNestedInput
     Review?: ReviewUpdateManyWithoutEventNestedInput
   }
 
@@ -15487,7 +15233,6 @@ export namespace Prisma {
     time?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Ticket?: TicketUncheckedUpdateManyWithoutEventNestedInput
-    Order?: OrderUncheckedUpdateManyWithoutEventNestedInput
     Review?: ReviewUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -15512,16 +15257,6 @@ export namespace Prisma {
     seats: number
     price: number
     createdAt?: Date | string
-  }
-
-  export type OrderCreateManyEventInput = {
-    id?: number
-    total_price: number
-    final_price: number
-    status: $Enums.StatusOrder
-    createdAt?: Date | string
-    userId: string
-    payment_proof?: string | null
   }
 
   export type ReviewCreateManyEventInput = {
@@ -15554,37 +15289,6 @@ export namespace Prisma {
     seats?: IntFieldUpdateOperationsInput | number
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type OrderUpdateWithoutEventInput = {
-    total_price?: IntFieldUpdateOperationsInput | number
-    final_price?: IntFieldUpdateOperationsInput | number
-    status?: EnumStatusOrderFieldUpdateOperationsInput | $Enums.StatusOrder
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    payment_proof?: NullableStringFieldUpdateOperationsInput | string | null
-    user?: UserUpdateOneRequiredWithoutOrderNestedInput
-    Order_Details?: Order_DetailsUpdateManyWithoutOrderNestedInput
-  }
-
-  export type OrderUncheckedUpdateWithoutEventInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    total_price?: IntFieldUpdateOperationsInput | number
-    final_price?: IntFieldUpdateOperationsInput | number
-    status?: EnumStatusOrderFieldUpdateOperationsInput | $Enums.StatusOrder
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: StringFieldUpdateOperationsInput | string
-    payment_proof?: NullableStringFieldUpdateOperationsInput | string | null
-    Order_Details?: Order_DetailsUncheckedUpdateManyWithoutOrderNestedInput
-  }
-
-  export type OrderUncheckedUpdateManyWithoutEventInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    total_price?: IntFieldUpdateOperationsInput | number
-    final_price?: IntFieldUpdateOperationsInput | number
-    status?: EnumStatusOrderFieldUpdateOperationsInput | $Enums.StatusOrder
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: StringFieldUpdateOperationsInput | string
-    payment_proof?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ReviewUpdateWithoutEventInput = {
