@@ -5,6 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.uploader = void 0;
 const multer_1 = __importDefault(require("multer"));
+<<<<<<< HEAD
+const uploader = (type = "memoryStorage", filePrefix, folderName) => {
+    const storage = multer_1.default.memoryStorage();
+=======
 const path_1 = __importDefault(require("path"));
 const uploader = (type = "memoryStorage", filePrefix, folderName) => {
     const defaultDir = path_1.default.join(__dirname, "../../public");
@@ -25,6 +29,7 @@ const uploader = (type = "memoryStorage", filePrefix, folderName) => {
                 cb(null, newFileName);
             },
         });
+>>>>>>> 29015dbb829ec7e191342e3e6ac54a2e823e33b7
     return (0, multer_1.default)({ storage });
 };
 exports.uploader = uploader;

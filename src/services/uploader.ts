@@ -1,11 +1,25 @@
+<<<<<<< HEAD
+import multer from "multer";
+=======
 import { Request } from "express";
 import multer from "multer";
 import path from "path";
+>>>>>>> 29015dbb829ec7e191342e3e6ac54a2e823e33b7
 
 type DestinationCallback = (error: Error | null, destination: string) => void;
 type FileNameCallback = (error: Error | null, fileName: string) => void;
 
 export const uploader = (
+<<<<<<< HEAD
+  type: "memoryStorage" = "memoryStorage",
+  filePrefix: string,
+  folderName?: string
+) => {
+  const storage = multer.memoryStorage();
+
+  return multer({ storage });
+};
+=======
   type: "memoryStorage" | "diskStorage" = "memoryStorage",
   filePrefix: string,
   folderName?: string
@@ -42,3 +56,4 @@ export const uploader = (
 
   return multer({ storage });
 };
+>>>>>>> 29015dbb829ec7e191342e3e6ac54a2e823e33b7
