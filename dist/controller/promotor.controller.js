@@ -16,6 +16,7 @@ exports.PromotorController = void 0;
 const client_1 = require("@prisma/client");
 const prisma_1 = __importDefault(require("../prisma"));
 const uuid_1 = require("uuid");
+const cloudinary_1 = require("../services/cloudinary");
 class PromotorController {
     getPromotors(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -102,7 +103,7 @@ class PromotorController {
                 const { id } = req.params;
                 const updatedPromotor = yield prisma_1.default.promotor.update({
                     data: req.body,
-                    where: { id },
+                    where: { id: id || "" },
                 });
                 res
                     .status(200)
@@ -119,7 +120,7 @@ class PromotorController {
             try {
                 const { id } = req.params;
                 yield prisma_1.default.promotor.delete({ where: { id } });
-                res.status(200).send("Promotor Deleted! ✅");
+                res.status(200).send({ message: "Promotor Deleted! ✅" });
             }
             catch (err) {
                 console.log(err);
@@ -129,20 +130,35 @@ class PromotorController {
     }
     editAvatarPro(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
-                const { id } = req.params;
-                const { avatarUrl } = req.body;
-                if (!avatarUrl) {
-                    res.status(400).json({ message: "Avatar URL is required" });
-                    return;
-                }
-                const updatedPromotor = yield prisma_1.default.promotor.update({
-                    where: { id },
-                    data: { avatar: avatarUrl },
+                if (!req.file)
+                    throw { message: "File is Empty!" };
+                const link = `http://localhost:8000/api/public/avatar/${req.file.filename}`;
+                yield prisma_1.default.promotor.update({
+                    data: { avatar: link },
+                    where: { id: (_a = req.promotor) === null || _a === void 0 ? void 0 : _a.id },
                 });
-                res
-                    .status(200)
-                    .send({ message: "Avatar Updated! ✅", promotor: updatedPromotor });
+                res.status(200).send({ message: "Avatar Edited! ✅" });
+            }
+            catch (err) {
+                console.log(err);
+                res.status(400).send(err);
+            }
+        });
+    }
+    editAvatarProCloud(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                if (!req.file)
+                    throw { message: "File is Empty!" };
+                const { secure_url } = yield (0, cloudinary_1.cloudinaryUpload)(req.file, "avatar");
+                yield prisma_1.default.promotor.update({
+                    data: { avatar: secure_url },
+                    where: { id: (_a = req.promotor) === null || _a === void 0 ? void 0 : _a.id },
+                });
+                res.status(200).send({ message: "Avatar Edited! ✅" });
             }
             catch (err) {
                 console.log(err);

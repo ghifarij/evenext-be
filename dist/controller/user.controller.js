@@ -16,6 +16,7 @@ exports.UserController = void 0;
 const client_1 = require("../../prisma/generated/client");
 const prisma_1 = __importDefault(require("../prisma"));
 const uuid_1 = require("uuid");
+const cloudinary_1 = require("../services/cloudinary");
 class UserController {
     getUsers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -126,20 +127,35 @@ class UserController {
     }
     editAvatar(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
-                const { id } = req.params;
-                const { avatarUrl } = req.body;
-                if (!avatarUrl) {
-                    res.status(400).json({ message: "Avatar URL is required" });
-                    return;
-                }
-                const updatedUser = yield prisma_1.default.user.update({
-                    where: { id },
-                    data: { avatar: avatarUrl },
+                if (!req.file)
+                    throw { message: "File is Empty!" };
+                const link = `http://localhost:8000/api/public/avatar/${req.file.filename}`;
+                yield prisma_1.default.user.update({
+                    data: { avatar: link },
+                    where: { id: (_a = req.user) === null || _a === void 0 ? void 0 : _a.id },
                 });
-                res
-                    .status(200)
-                    .send({ message: "Avatar Updated! ✅", user: updatedUser });
+                res.status(200).send({ message: "Avatar Edited! ✅" });
+            }
+            catch (err) {
+                console.log(err);
+                res.status(400).send(err);
+            }
+        });
+    }
+    editAvatarCloud(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                if (!req.file)
+                    throw { message: "File is Empty!" };
+                const { secure_url } = yield (0, cloudinary_1.cloudinaryUpload)(req.file, "avatar");
+                yield prisma_1.default.user.update({
+                    data: { avatar: secure_url },
+                    where: { id: (_a = req.user) === null || _a === void 0 ? void 0 : _a.id },
+                });
+                res.status(200).send({ message: "Avatar Edited! ✅" });
             }
             catch (err) {
                 console.log(err);
