@@ -311,6 +311,7 @@ export class AuthController {
             },
             User_Coupon: {
               select: {
+                id: true,
                 expiredAt: true,
               },
             },
@@ -371,7 +372,7 @@ export class AuthController {
       });
 
       // Create the password reset link
-      const resetLink = `${process.env.BASE_URL_FE}/login/resetPasswordUser/${resetToken}`;
+      const resetLink = `${process.env.BASE_URL_FE}/user/resetPasswordUser/${resetToken}`;
 
       // Prepare the email template
       const templatePath = path.join(

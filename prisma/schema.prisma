@@ -28,6 +28,7 @@ enum EventStatus {
   finish
 }
 
+
 enum TicketCategory {
   Free
   EarlyBird
