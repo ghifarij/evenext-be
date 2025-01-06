@@ -106,8 +106,9 @@ export class EventController {
         category,
         description,
         terms,
-        promotorId,
       } = req.body;
+
+      const promotorId = req.promotor?.id!;
 
       const event = await prisma.event.create({
         data: {
