@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { DasboardController } from "../controller/dashboard.controller";
+import { DashboardController } from "../controller/dashboard.controller";
 import { verifyTokenPro } from "../middlewares/verify";
 
 export class DashboardRouter {
-  private dashboardController: DasboardController;
+  private dashboardController: DashboardController;
   private router: Router;
 
   constructor() {
-    this.dashboardController = new DasboardController();
+    this.dashboardController = new DashboardController();
     this.router = Router();
     this.initializeRoutes();
   }
@@ -17,6 +17,31 @@ export class DashboardRouter {
       "/eventactive",
       verifyTokenPro,
       this.dashboardController.getEventActive
+    );
+    this.router.get(
+      "/eventfinish",
+      verifyTokenPro,
+      this.dashboardController.getEventFinish
+    );
+    this.router.get(
+      "/totaltransaction",
+      verifyTokenPro,
+      this.dashboardController.getTotalTransaction
+    );
+    this.router.get(
+      "/transaction/day",
+      verifyTokenPro,
+      this.dashboardController.getIncomePerDay
+    );
+    this.router.get(
+      "/transaction/month",
+      verifyTokenPro,
+      this.dashboardController.getIncomePerMonth
+    );
+    this.router.get(
+      "/transaction/year",
+      verifyTokenPro,
+      this.dashboardController.getIncomePerYear
     );
   }
 
