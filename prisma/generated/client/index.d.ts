@@ -83,6 +83,14 @@ export const EventLocation: {
 export type EventLocation = (typeof EventLocation)[keyof typeof EventLocation]
 
 
+export const EventStatus: {
+  active: 'active',
+  finish: 'finish'
+};
+
+export type EventStatus = (typeof EventStatus)[keyof typeof EventStatus]
+
+
 export const TicketCategory: {
   Free: 'Free',
   EarlyBird: 'EarlyBird',
@@ -110,6 +118,10 @@ export const EventCategory: typeof $Enums.EventCategory
 export type EventLocation = $Enums.EventLocation
 
 export const EventLocation: typeof $Enums.EventLocation
+
+export type EventStatus = $Enums.EventStatus
+
+export const EventStatus: typeof $Enums.EventStatus
 
 export type TicketCategory = $Enums.TicketCategory
 
@@ -5844,6 +5856,7 @@ export namespace Prisma {
     time: Date | null
     createdAt: Date | null
     promotorId: string | null
+    status: $Enums.EventStatus | null
   }
 
   export type EventMaxAggregateOutputType = {
@@ -5860,6 +5873,7 @@ export namespace Prisma {
     time: Date | null
     createdAt: Date | null
     promotorId: string | null
+    status: $Enums.EventStatus | null
   }
 
   export type EventCountAggregateOutputType = {
@@ -5876,6 +5890,7 @@ export namespace Prisma {
     time: number
     createdAt: number
     promotorId: number
+    status: number
     _all: number
   }
 
@@ -5902,6 +5917,7 @@ export namespace Prisma {
     time?: true
     createdAt?: true
     promotorId?: true
+    status?: true
   }
 
   export type EventMaxAggregateInputType = {
@@ -5918,6 +5934,7 @@ export namespace Prisma {
     time?: true
     createdAt?: true
     promotorId?: true
+    status?: true
   }
 
   export type EventCountAggregateInputType = {
@@ -5934,6 +5951,7 @@ export namespace Prisma {
     time?: true
     createdAt?: true
     promotorId?: true
+    status?: true
     _all?: true
   }
 
@@ -6037,6 +6055,7 @@ export namespace Prisma {
     time: Date
     createdAt: Date
     promotorId: string
+    status: $Enums.EventStatus
     _count: EventCountAggregateOutputType | null
     _avg: EventAvgAggregateOutputType | null
     _sum: EventSumAggregateOutputType | null
@@ -6072,6 +6091,7 @@ export namespace Prisma {
     time?: boolean
     createdAt?: boolean
     promotorId?: boolean
+    status?: boolean
     promotor?: boolean | PromotorDefaultArgs<ExtArgs>
     Ticket?: boolean | Event$TicketArgs<ExtArgs>
     Review?: boolean | Event$ReviewArgs<ExtArgs>
@@ -6092,6 +6112,7 @@ export namespace Prisma {
     time?: boolean
     createdAt?: boolean
     promotorId?: boolean
+    status?: boolean
     promotor?: boolean | PromotorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
@@ -6109,6 +6130,7 @@ export namespace Prisma {
     time?: boolean
     createdAt?: boolean
     promotorId?: boolean
+    status?: boolean
   }
 
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6142,6 +6164,7 @@ export namespace Prisma {
       time: Date
       createdAt: Date
       promotorId: string
+      status: $Enums.EventStatus
     }, ExtArgs["result"]["event"]>
     composites: {}
   }
@@ -6551,6 +6574,7 @@ export namespace Prisma {
     readonly time: FieldRef<"Event", 'DateTime'>
     readonly createdAt: FieldRef<"Event", 'DateTime'>
     readonly promotorId: FieldRef<"Event", 'String'>
+    readonly status: FieldRef<"Event", 'EventStatus'>
   }
     
 
@@ -11012,7 +11036,8 @@ export namespace Prisma {
     date: 'date',
     time: 'time',
     createdAt: 'createdAt',
-    promotorId: 'promotorId'
+    promotorId: 'promotorId',
+    status: 'status'
   };
 
   export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
@@ -11168,6 +11193,20 @@ export namespace Prisma {
    * Reference to a field of type 'EventLocation[]'
    */
   export type ListEnumEventLocationFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventLocation[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'EventStatus'
+   */
+  export type EnumEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'EventStatus[]'
+   */
+  export type ListEnumEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventStatus[]'>
     
 
 
@@ -11516,6 +11555,7 @@ export namespace Prisma {
     time?: DateTimeFilter<"Event"> | Date | string
     createdAt?: DateTimeFilter<"Event"> | Date | string
     promotorId?: StringFilter<"Event"> | string
+    status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     promotor?: XOR<PromotorScalarRelationFilter, PromotorWhereInput>
     Ticket?: TicketListRelationFilter
     Review?: ReviewListRelationFilter
@@ -11535,6 +11575,7 @@ export namespace Prisma {
     time?: SortOrder
     createdAt?: SortOrder
     promotorId?: SortOrder
+    status?: SortOrder
     promotor?: PromotorOrderByWithRelationInput
     Ticket?: TicketOrderByRelationAggregateInput
     Review?: ReviewOrderByRelationAggregateInput
@@ -11557,6 +11598,7 @@ export namespace Prisma {
     time?: DateTimeFilter<"Event"> | Date | string
     createdAt?: DateTimeFilter<"Event"> | Date | string
     promotorId?: StringFilter<"Event"> | string
+    status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     promotor?: XOR<PromotorScalarRelationFilter, PromotorWhereInput>
     Ticket?: TicketListRelationFilter
     Review?: ReviewListRelationFilter
@@ -11576,6 +11618,7 @@ export namespace Prisma {
     time?: SortOrder
     createdAt?: SortOrder
     promotorId?: SortOrder
+    status?: SortOrder
     _count?: EventCountOrderByAggregateInput
     _avg?: EventAvgOrderByAggregateInput
     _max?: EventMaxOrderByAggregateInput
@@ -11600,6 +11643,7 @@ export namespace Prisma {
     time?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     promotorId?: StringWithAggregatesFilter<"Event"> | string
+    status?: EnumEventStatusWithAggregatesFilter<"Event"> | $Enums.EventStatus
   }
 
   export type TicketWhereInput = {
@@ -12175,6 +12219,7 @@ export namespace Prisma {
     date: Date | string
     time: Date | string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     promotor: PromotorCreateNestedOneWithoutEventInput
     Ticket?: TicketCreateNestedManyWithoutEventInput
     Review?: ReviewCreateNestedManyWithoutEventInput
@@ -12194,6 +12239,7 @@ export namespace Prisma {
     time: Date | string
     createdAt?: Date | string
     promotorId: string
+    status?: $Enums.EventStatus
     Ticket?: TicketUncheckedCreateNestedManyWithoutEventInput
     Review?: ReviewUncheckedCreateNestedManyWithoutEventInput
   }
@@ -12210,6 +12256,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     time?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     promotor?: PromotorUpdateOneRequiredWithoutEventNestedInput
     Ticket?: TicketUpdateManyWithoutEventNestedInput
     Review?: ReviewUpdateManyWithoutEventNestedInput
@@ -12229,6 +12276,7 @@ export namespace Prisma {
     time?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     promotorId?: StringFieldUpdateOperationsInput | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     Ticket?: TicketUncheckedUpdateManyWithoutEventNestedInput
     Review?: ReviewUncheckedUpdateManyWithoutEventNestedInput
   }
@@ -12247,6 +12295,7 @@ export namespace Prisma {
     time: Date | string
     createdAt?: Date | string
     promotorId: string
+    status?: $Enums.EventStatus
   }
 
   export type EventUpdateManyMutationInput = {
@@ -12261,6 +12310,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     time?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   }
 
   export type EventUncheckedUpdateManyInput = {
@@ -12277,6 +12327,7 @@ export namespace Prisma {
     time?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     promotorId?: StringFieldUpdateOperationsInput | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   }
 
   export type TicketCreateInput = {
@@ -12865,6 +12916,13 @@ export namespace Prisma {
     not?: NestedEnumEventLocationFilter<$PrismaModel> | $Enums.EventLocation
   }
 
+  export type EnumEventStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventStatusFilter<$PrismaModel> | $Enums.EventStatus
+  }
+
   export type PromotorScalarRelationFilter = {
     is?: PromotorWhereInput
     isNot?: PromotorWhereInput
@@ -12894,6 +12952,7 @@ export namespace Prisma {
     time?: SortOrder
     createdAt?: SortOrder
     promotorId?: SortOrder
+    status?: SortOrder
   }
 
   export type EventAvgOrderByAggregateInput = {
@@ -12914,6 +12973,7 @@ export namespace Prisma {
     time?: SortOrder
     createdAt?: SortOrder
     promotorId?: SortOrder
+    status?: SortOrder
   }
 
   export type EventMinOrderByAggregateInput = {
@@ -12930,6 +12990,7 @@ export namespace Prisma {
     time?: SortOrder
     createdAt?: SortOrder
     promotorId?: SortOrder
+    status?: SortOrder
   }
 
   export type EventSumOrderByAggregateInput = {
@@ -12954,6 +13015,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEventLocationFilter<$PrismaModel>
     _max?: NestedEnumEventLocationFilter<$PrismaModel>
+  }
+
+  export type EnumEventStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventStatusWithAggregatesFilter<$PrismaModel> | $Enums.EventStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEventStatusFilter<$PrismaModel>
+    _max?: NestedEnumEventStatusFilter<$PrismaModel>
   }
 
   export type EnumTicketCategoryFilter<$PrismaModel = never> = {
@@ -13476,6 +13547,10 @@ export namespace Prisma {
     set?: $Enums.EventLocation
   }
 
+  export type EnumEventStatusFieldUpdateOperationsInput = {
+    set?: $Enums.EventStatus
+  }
+
   export type PromotorUpdateOneRequiredWithoutEventNestedInput = {
     create?: XOR<PromotorCreateWithoutEventInput, PromotorUncheckedCreateWithoutEventInput>
     connectOrCreate?: PromotorCreateOrConnectWithoutEventInput
@@ -13879,6 +13954,13 @@ export namespace Prisma {
     not?: NestedEnumEventLocationFilter<$PrismaModel> | $Enums.EventLocation
   }
 
+  export type NestedEnumEventStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventStatusFilter<$PrismaModel> | $Enums.EventStatus
+  }
+
   export type NestedEnumEventCategoryWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.EventCategory | EnumEventCategoryFieldRefInput<$PrismaModel>
     in?: $Enums.EventCategory[] | ListEnumEventCategoryFieldRefInput<$PrismaModel>
@@ -13897,6 +13979,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEventLocationFilter<$PrismaModel>
     _max?: NestedEnumEventLocationFilter<$PrismaModel>
+  }
+
+  export type NestedEnumEventStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventStatusWithAggregatesFilter<$PrismaModel> | $Enums.EventStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEventStatusFilter<$PrismaModel>
+    _max?: NestedEnumEventStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumTicketCategoryFilter<$PrismaModel = never> = {
@@ -14322,6 +14414,7 @@ export namespace Prisma {
     date: Date | string
     time: Date | string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     Ticket?: TicketCreateNestedManyWithoutEventInput
     Review?: ReviewCreateNestedManyWithoutEventInput
   }
@@ -14339,6 +14432,7 @@ export namespace Prisma {
     date: Date | string
     time: Date | string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     Ticket?: TicketUncheckedCreateNestedManyWithoutEventInput
     Review?: ReviewUncheckedCreateNestedManyWithoutEventInput
   }
@@ -14386,6 +14480,7 @@ export namespace Prisma {
     time?: DateTimeFilter<"Event"> | Date | string
     createdAt?: DateTimeFilter<"Event"> | Date | string
     promotorId?: StringFilter<"Event"> | string
+    status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
   }
 
   export type PromotorCreateWithoutEventInput = {
@@ -14554,6 +14649,7 @@ export namespace Prisma {
     date: Date | string
     time: Date | string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     promotor: PromotorCreateNestedOneWithoutEventInput
     Review?: ReviewCreateNestedManyWithoutEventInput
   }
@@ -14572,6 +14668,7 @@ export namespace Prisma {
     time: Date | string
     createdAt?: Date | string
     promotorId: string
+    status?: $Enums.EventStatus
     Review?: ReviewUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -14624,6 +14721,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     time?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     promotor?: PromotorUpdateOneRequiredWithoutEventNestedInput
     Review?: ReviewUpdateManyWithoutEventNestedInput
   }
@@ -14642,6 +14740,7 @@ export namespace Prisma {
     time?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     promotorId?: StringFieldUpdateOperationsInput | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     Review?: ReviewUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -14945,6 +15044,7 @@ export namespace Prisma {
     date: Date | string
     time: Date | string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     promotor: PromotorCreateNestedOneWithoutEventInput
     Ticket?: TicketCreateNestedManyWithoutEventInput
   }
@@ -14963,6 +15063,7 @@ export namespace Prisma {
     time: Date | string
     createdAt?: Date | string
     promotorId: string
+    status?: $Enums.EventStatus
     Ticket?: TicketUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -15037,6 +15138,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     time?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     promotor?: PromotorUpdateOneRequiredWithoutEventNestedInput
     Ticket?: TicketUpdateManyWithoutEventNestedInput
   }
@@ -15055,6 +15157,7 @@ export namespace Prisma {
     time?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     promotorId?: StringFieldUpdateOperationsInput | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     Ticket?: TicketUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -15201,6 +15304,7 @@ export namespace Prisma {
     date: Date | string
     time: Date | string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
   }
 
   export type EventUpdateWithoutPromotorInput = {
@@ -15215,6 +15319,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     time?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     Ticket?: TicketUpdateManyWithoutEventNestedInput
     Review?: ReviewUpdateManyWithoutEventNestedInput
   }
@@ -15232,6 +15337,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     time?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     Ticket?: TicketUncheckedUpdateManyWithoutEventNestedInput
     Review?: ReviewUncheckedUpdateManyWithoutEventNestedInput
   }
@@ -15249,6 +15355,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     time?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   }
 
   export type TicketCreateManyEventInput = {

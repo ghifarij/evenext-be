@@ -172,7 +172,8 @@ exports.Prisma.EventScalarFieldEnum = {
   date: 'date',
   time: 'time',
   createdAt: 'createdAt',
-  promotorId: 'promotorId'
+  promotorId: 'promotorId',
+  status: 'status'
 };
 
 exports.Prisma.TicketScalarFieldEnum = {
@@ -236,6 +237,11 @@ exports.EventLocation = exports.$Enums.EventLocation = {
   Jakarta: 'Jakarta',
   Surabaya: 'Surabaya',
   Bali: 'Bali'
+};
+
+exports.EventStatus = exports.$Enums.EventStatus = {
+  active: 'active',
+  finish: 'finish'
 };
 
 exports.TicketCategory = exports.$Enums.TicketCategory = {

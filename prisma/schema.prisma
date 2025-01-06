@@ -23,6 +23,12 @@ enum EventLocation {
   Bali
 }
 
+enum EventStatus {
+  active
+  finish
+}
+
+
 enum TicketCategory {
   Free
   EarlyBird
@@ -105,6 +111,7 @@ model Event {
   createdAt   DateTime      @default(now())
   promotorId  String
   promotor    Promotor      @relation(fields: [promotorId], references: [id])
+  status      EventStatus  @default(active)
 
   Ticket Ticket[]
 
