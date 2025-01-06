@@ -7,6 +7,7 @@ import { AuthRouter } from "./router/auth.router";
 import cookieParser from "cookie-parser";
 import path from "path";
 import { PromotorRouter } from "./router/promotor.router";
+import { DashboardRouter } from "./router/dashboard.router";
 import { OrderRouter } from "./router/order.router";
 
 const PORT: number = 8000;
@@ -29,6 +30,7 @@ app.get("/api", (req: Request, res: Response) => {
 app.use("/api/public", express.static(path.join(__dirname, "../public")));
 
 const eventRouter = new EventRouter();
+const dashboardRouter = new DashboardRouter();
 const ticketRouter = new TicketRouter();
 const userRouter = new UserRouter();
 const promotorRouter = new PromotorRouter();
@@ -36,6 +38,7 @@ const authRouter = new AuthRouter();
 const orderRouter = new OrderRouter();
 
 app.use("/api/events", eventRouter.getRouter());
+app.use("/api/dashboard", dashboardRouter.getRouter());
 app.use("/api/tickets", ticketRouter.getRouter());
 app.use("/api/users", userRouter.getRouter());
 app.use("/api/promotors", promotorRouter.getRouter());
