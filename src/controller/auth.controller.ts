@@ -311,7 +311,10 @@ export class AuthController {
             },
             User_Coupon: {
               select: {
+<<<<<<< HEAD
+=======
                 id: true,
+>>>>>>> aa71d0b7fd72ac8b78e892060bc440934f8c8fa4
                 expiredAt: true,
               },
             },

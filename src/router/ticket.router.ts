@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { TicketController } from "../controller/ticket.controller";
 import { asyncHandler } from "../middlewares/asyncHandler";
+import { verifyTokenPro } from "../middlewares/verify";
 
 export class TicketRouter {
   private ticketController: TicketController;
@@ -17,6 +18,7 @@ export class TicketRouter {
 
     this.router.post(
       "/:eventId",
+      verifyTokenPro,
       asyncHandler(this.ticketController.createTicket)
     );
   }
