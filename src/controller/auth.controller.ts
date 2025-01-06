@@ -311,6 +311,7 @@ export class AuthController {
             },
             User_Coupon: {
               select: {
+                id: true,
                 expiredAt: true,
               },
             },
