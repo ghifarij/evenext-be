@@ -75,19 +75,18 @@ export class AuthController {
             referred_by,
           },
         });
-        await prisma.user_Coupon.create({
+        await prisma.coupon.create({
           data: {
-            percentage: 10,
-            isRedeem: false,
+            isActive: true,
             expiredAt: addMonths(new Date(), 3),
             userId: newUser.id,
           },
         });
-        await prisma.user_Point.create({
+        await prisma.point.create({
           data: {
             point: 10000,
             expiredAt: addMonths(new Date(), 3),
-            isRedeem: false,
+            isActive: true,
             userId: referrer.id,
           },
         });
@@ -256,35 +255,35 @@ export class AuthController {
         res.status(401).send({ message: "Unauthorized: No token provided" });
         return;
       }
-  
+
       const token = authHeader.split(" ")[1];
       if (!token) {
         res.status(401).send({ message: "Unauthorized: Token missing" });
         return;
       }
-  
+
       // Verify token
       const decoded = verify(token, process.env.JWT_KEY!) as {
         id: string;
         type: string;
       };
-  
+
       if (!decoded || !decoded.type) {
         res.status(403).send({ message: "Forbidden: Invalid token" });
         return;
       }
-  
+
       // Handle different user types
       if (decoded.type === "promotor") {
         const promotor = await prisma.promotor.findUnique({
           where: { id: decoded.id },
         });
-  
+
         if (!promotor) {
           res.status(404).send({ message: "Promotor not found" });
           return;
         }
-  
+
         res.status(200).send({
           id: promotor.id,
           type: "promotor",
@@ -312,21 +311,23 @@ export class AuthController {
             },
             User_Coupon: {
               select: {
-                percentage: true,
                 expiredAt: true,
               },
             },
           },
         });
-  
+
         if (!user) {
           res.status(404).send({ message: "User not found" });
           return;
         }
-  
+
         // Calculate total points
-        const totalPoints = user.User_Point.reduce((sum, point) => sum + point.point, 0);
-  
+        const totalPoints = user.User_Point.reduce(
+          (sum, point) => sum + point.point,
+          0
+        );
+
         res.status(200).json({
           id: user.id,
           type: "user",
@@ -347,7 +348,7 @@ export class AuthController {
         .status(401)
         .send({ message: "Unauthorized: Invalid or expired token" });
     }
-  }  
+  }
 
   async forgotPasswordUser(req: Request, res: Response) {
     try {

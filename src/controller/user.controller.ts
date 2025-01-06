@@ -149,4 +149,42 @@ export class UserController {
       res.status(400).send(err);
     }
   }
+
+  async getUserCoupon(req: Request, res: Response) {
+    try {
+      const coupon = await prisma.coupon.findFirst({
+        where: {
+          AND: [
+            { userId: req.user?.id },
+            { expiredAt: { gt: new Date() } },
+            { isActive: true },
+          ],
+        },
+        select: { isActive: true },
+      });
+      res.status(200).send({ result: coupon?.isActive });
+    } catch (err) {
+      console.log(err);
+      res.status(400).send(err);
+    }
+  }
+
+  async getPointsUser(req: Request, res: Response) {
+    try {
+      const points = await prisma.point.aggregate({
+        where: {
+          AND: [
+            { userId: req.user?.id },
+            { isActive: true },
+            { expiredAt: { gt: new Date() } },
+          ],
+        },
+        _sum: { point: true },
+      });
+      res.status(200).send({ result: points._sum.point });
+    } catch (err) {
+      console.log(err);
+      res.status(400).send(err);
+    }
+  }
 }

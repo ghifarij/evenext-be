@@ -339,6 +339,8 @@ class AuthController {
             }
         });
     }
+<<<<<<< HEAD
+=======
     forgotPasswordUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -525,5 +527,6 @@ class AuthController {
             }
         });
     }
+>>>>>>> 29015dbb829ec7e191342e3e6ac54a2e823e33b7
 }
 exports.AuthController = AuthController;

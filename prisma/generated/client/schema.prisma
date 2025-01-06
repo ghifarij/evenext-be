@@ -23,6 +23,11 @@ enum EventLocation {
   Bali
 }
 
+enum EventStatus {
+  active
+  finish
+}
+
 enum TicketCategory {
   Free
   EarlyBird
@@ -48,33 +53,32 @@ model User {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  User_Point User_Point[]
+  User_Point Point[]
 
-  User_Coupon User_Coupon[]
+  User_Coupon Coupon[]
 
   Order Order[]
 
   Review Review[]
 }
 
-model User_Point {
+model Point {
   id        Int      @id @default(autoincrement())
   point     Int      @default(10000)
   createdAt DateTime @default(now())
   expiredAt DateTime
-  isRedeem  Boolean  @default(false)
+  isActive  Boolean  @default(true)
   userId    String
   user      User     @relation(fields: [userId], references: [id])
 }
 
-model User_Coupon {
-  id         Int      @id @default(autoincrement())
-  isRedeem   Boolean  @default(false)
-  percentage Int      @default(10)
-  createdAt  DateTime @default(now())
-  expiredAt  DateTime
-  userId     String
-  user       User     @relation(fields: [userId], references: [id])
+model Coupon {
+  id        Int      @id @default(autoincrement())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  expiredAt DateTime
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Promotor {
@@ -100,6 +104,7 @@ model Event {
   category    EventCategory
   location    EventLocation
   venue       String
+  status      EventStatus   @default(active)
   date        DateTime      @db.Date
   time        DateTime      @db.Time()
   createdAt   DateTime      @default(now())
@@ -124,26 +129,29 @@ model Ticket {
 }
 
 model Order {
-  id           Int         @id @default(autoincrement())
-  total_price  Int
-  final_price  Int
-  status       StatusOrder
-  redirect_url String?
-  createdAt    DateTime    @default(now())
-  expiredAt    DateTime
-  userId       String
-  user         User        @relation(fields: [userId], references: [id])
+  id          Int         @id @default(autoincrement())
+  total_price Int
+  final_price Int
+  status      StatusOrder
+  coupon      Boolean     @default(false)
+  point       Int         @default(0)
+  createdAt   DateTime    @default(now())
+  expiredAt   DateTime
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
 
   Order_Details Order_Details[]
 }
 
 model Order_Details {
-  id       Int    @id @default(autoincrement())
+  orderId  Int
   ticketId Int
   qty      Int
-  orderId  Int
+  subtotal Int
   ticket   Ticket @relation(fields: [ticketId], references: [id])
   order    Order  @relation(fields: [orderId], references: [id])
+
+  @@id([orderId, ticketId])
 }
 
 model Review {
