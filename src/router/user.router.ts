@@ -28,6 +28,8 @@ export class UserRouter {
       uploader("memoryStorage", "avatar").single("file"),
       this.userController.editAvatarCloud
     );
+    this.router.get("/coupon", verifyToken, this.userController.getUserCoupon);
+    this.router.get("/points", verifyToken, this.userController.getPointsUser);
 
     this.router.get("/:id", this.userController.getUsersId);
     this.router.patch("/:id", this.userController.editUser);
