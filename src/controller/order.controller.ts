@@ -12,6 +12,12 @@ export class OrderController {
       const { total_price, coupon, point, final_price, orderCart } = req.body;
       const expiredAt = new Date(new Date().getTime() + 30 * 60 * 1000);
 
+      if (!orderCart || !Array.isArray(orderCart)) {
+        throw new Error(
+          "Invalid orderCart data. Ensure it's an array of items."
+        );
+      }
+
       const orderId = await prisma.$transaction(async (prisma) => {
         if (coupon) {
           const coupon = await prisma.coupon.findFirst({
@@ -66,7 +72,7 @@ export class OrderController {
 
       res
         .status(201)
-        .send({ message: "Order created successfully", orderId: orderId });
+        .send({ message: "Order created successfully", order_id: orderId });
     } catch (error) {
       console.error(error);
       res.status(400).send({ error: "Failed to create order", details: error });
@@ -214,12 +220,13 @@ export class OrderController {
   async midtransWebHook(req: Request, res: Response) {
     try {
       const { transaction_status, order_id } = req.body;
-      const statusTransaction =
-        transaction_status === "settlement"
-          ? "Paid"
-          : transaction_status === "Pending"
-          ? "Pending"
-          : "Cancel";
+
+      let statusTransaction: "Paid" | "Pending" | "Cancel" = "Pending";
+      if (transaction_status === "settlement") {
+        statusTransaction = "Paid";
+      } else if (transaction_status === "cancel") {
+        statusTransaction = "Cancel";
+      }
 
       if (statusTransaction === "Cancel") {
         const tickets = await prisma.order_Details.findMany({
