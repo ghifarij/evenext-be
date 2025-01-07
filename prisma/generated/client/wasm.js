@@ -118,16 +118,16 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 });
 
 exports.Prisma.UserScalarFieldEnum = {
-  id: 'id',
-  username: 'username',
   email: 'email',
   password: 'password',
   avatar: 'avatar',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  id: 'id',
   isVerify: 'isVerify',
   ref_code: 'ref_code',
-  referred_by: 'referred_by',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  username: 'username',
+  referred_by: 'referred_by'
 };
 
 exports.Prisma.PointScalarFieldEnum = {
@@ -149,30 +149,30 @@ exports.Prisma.CouponScalarFieldEnum = {
 
 exports.Prisma.PromotorScalarFieldEnum = {
   id: 'id',
-  username: 'username',
   email: 'email',
   password: 'password',
   avatar: 'avatar',
   isVerify: 'isVerify',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  username: 'username'
 };
 
 exports.Prisma.EventScalarFieldEnum = {
   id: 'id',
   title: 'title',
-  slug: 'slug',
-  thumbnail: 'thumbnail',
   description: 'description',
   terms: 'terms',
   category: 'category',
   location: 'location',
   venue: 'venue',
-  status: 'status',
   date: 'date',
-  time: 'time',
   createdAt: 'createdAt',
-  promotorId: 'promotorId'
+  promotorId: 'promotorId',
+  thumbnail: 'thumbnail',
+  slug: 'slug',
+  time: 'time',
+  status: 'status'
 };
 
 exports.Prisma.TicketScalarFieldEnum = {
@@ -189,26 +189,26 @@ exports.Prisma.OrderScalarFieldEnum = {
   total_price: 'total_price',
   final_price: 'final_price',
   status: 'status',
-  coupon: 'coupon',
-  point: 'point',
   createdAt: 'createdAt',
+  userId: 'userId',
   expiredAt: 'expiredAt',
-  userId: 'userId'
+  coupon: 'coupon',
+  point: 'point'
 };
 
 exports.Prisma.Order_DetailsScalarFieldEnum = {
-  orderId: 'orderId',
   ticketId: 'ticketId',
   qty: 'qty',
+  orderId: 'orderId',
   subtotal: 'subtotal'
 };
 
 exports.Prisma.ReviewScalarFieldEnum = {
-  id: 'id',
   description: 'description',
   rating: 'rating',
   userId: 'userId',
-  eventId: 'eventId'
+  eventId: 'eventId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
