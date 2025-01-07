@@ -9,6 +9,38 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum EventCategory {
+  Konser
+  Seminar
+  Olahraga
+  Expo
+}
+
+enum EventLocation {
+  Bandung
+  Jakarta
+  Surabaya
+  Bali
+}
+
+enum EventStatus {
+  active
+  finish
+}
+
+enum TicketCategory {
+  Free
+  EarlyBird
+  Regular
+  VIP
+}
+
+enum StatusOrder {
+  Pending
+  Paid
+  Cancel
+}
+
 model User {
   email       String   @unique
   password    String
@@ -114,46 +146,14 @@ model Order_Details {
 }
 
 model Review {
+  userId  String
+  eventId Int
+
   description String
   rating      Int
-  userId      String
-  eventId     Int
   createdAt   DateTime @default(now())
-
-  event Event @relation(fields: [eventId], references: [id])
-  user  User  @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+  event       Event    @relation(fields: [eventId], references: [id])
 
   @@id([userId, eventId])
-}
-
-enum EventCategory {
-  Konser
-  Seminar
-  Olahraga
-  Expo
-}
-
-enum EventLocation {
-  Bandung
-  Jakarta
-  Surabaya
-  Bali
-}
-
-enum EventStatus {
-  active
-  finish
-}
-
-enum TicketCategory {
-  Free
-  EarlyBird
-  Regular
-  VIP
-}
-
-enum StatusOrder {
-  Pending
-  Paid
-  Cancel
 }
