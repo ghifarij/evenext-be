@@ -9,6 +9,123 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model User {
+  email       String   @unique
+  password    String
+  avatar      String   @default("https://res.cloudinary.com/dgsz2pael/image/upload/v1733381132/blank-profile_sunr5j.webp")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  id          String   @id @default(uuid())
+  isVerify    Boolean  @default(false)
+  ref_code    String?  @unique
+  username    String   @unique
+  referred_by String?
+  User_Coupon Coupon[]
+  Order       Order[]
+  User_Point  Point[]
+  Review      Review[]
+}
+
+model Point {
+  id        Int      @id @default(autoincrement())
+  point     Int      @default(10000)
+  createdAt DateTime @default(now())
+  expiredAt DateTime
+  isActive  Boolean  @default(true)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Coupon {
+  id        Int      @id @default(autoincrement())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  expiredAt DateTime
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Promotor {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  avatar    String   @default("https://res.cloudinary.com/dgsz2pael/image/upload/v1733381132/blank-profile_sunr5j.webp")
+  isVerify  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+  Event     Event[]
+}
+
+model Event {
+  id          Int           @id @default(autoincrement())
+  title       String        @unique
+  description String
+  terms       String
+  category    EventCategory
+  location    EventLocation
+  venue       String
+  date        DateTime      @db.Date
+  createdAt   DateTime      @default(now())
+  promotorId  String
+  thumbnail   String        @default("https://res.cloudinary.com/dgsz2pael/image/upload/v1733734320/picture-2008484_1280_weralp.png")
+  slug        String        @unique
+  time        DateTime      @db.Time(6)
+  status      EventStatus   @default(active)
+  promotor    Promotor      @relation(fields: [promotorId], references: [id])
+  Review      Review[]
+  Ticket      Ticket[]
+}
+
+model Ticket {
+  id            Int             @id @default(autoincrement())
+  category      TicketCategory
+  seats         Int
+  price         Int
+  createdAt     DateTime        @default(now())
+  eventId       Int
+  Order_Details Order_Details[]
+  event         Event           @relation(fields: [eventId], references: [id])
+}
+
+model Order {
+  id            Int             @id @default(autoincrement())
+  total_price   Int
+  final_price   Int
+  status        StatusOrder
+  createdAt     DateTime        @default(now())
+  userId        String
+  expiredAt     DateTime
+  coupon        Boolean         @default(false)
+  point         Int             @default(0)
+  user          User            @relation(fields: [userId], references: [id])
+  Order_Details Order_Details[]
+}
+
+model Order_Details {
+  ticketId Int
+  qty      Int
+  orderId  Int
+  subtotal Int
+  order    Order  @relation(fields: [orderId], references: [id])
+  ticket   Ticket @relation(fields: [ticketId], references: [id])
+
+  @@id([orderId, ticketId])
+}
+
+model Review {
+  description String
+  rating      Int
+  userId      String
+  eventId     Int
+  createdAt   DateTime @default(now())
+
+  event Event @relation(fields: [eventId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@id([userId, eventId])
+}
+
 enum EventCategory {
   Konser
   Seminar
@@ -39,127 +156,4 @@ enum StatusOrder {
   Pending
   Paid
   Cancel
-}
-
-model User {
-  id          String   @id @default(uuid())
-  username    String   @unique
-  email       String   @unique
-  password    String
-  avatar      String   @default("https://res.cloudinary.com/dgsz2pael/image/upload/v1733381132/blank-profile_sunr5j.webp")
-  isVerify    Boolean  @default(false)
-  ref_code    String?  @unique
-  referred_by String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  User_Point Point[]
-
-  User_Coupon Coupon[]
-
-  Order Order[]
-
-  Review Review[]
-}
-
-model Point {
-  id        Int      @id @default(autoincrement())
-  point     Int      @default(10000)
-  createdAt DateTime @default(now())
-  expiredAt DateTime
-  isActive  Boolean  @default(true)
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-}
-
-model Coupon {
-  id        Int      @id @default(autoincrement())
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  expiredAt DateTime
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-}
-
-model Promotor {
-  id        String   @id @default(uuid())
-  username  String   @unique
-  email     String   @unique
-  password  String
-  avatar    String   @default("https://res.cloudinary.com/dgsz2pael/image/upload/v1733381132/blank-profile_sunr5j.webp")
-  isVerify  Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  Event Event[]
-}
-
-model Event {
-  id          Int           @id @default(autoincrement())
-  title       String        @unique
-  slug        String        @unique
-  thumbnail   String        @default("https://res.cloudinary.com/dgsz2pael/image/upload/v1733734320/picture-2008484_1280_weralp.png")
-  description String
-  terms       String
-  category    EventCategory
-  location    EventLocation
-  venue       String
-  status      EventStatus   @default(active)
-  date        DateTime      @db.Date
-  time        DateTime      @db.Time()
-  createdAt   DateTime      @default(now())
-  promotorId  String
-  promotor    Promotor      @relation(fields: [promotorId], references: [id])
-
-  Ticket Ticket[]
-
-  Review Review[]
-}
-
-model Ticket {
-  id        Int            @id @default(autoincrement())
-  category  TicketCategory
-  seats     Int
-  price     Int
-  createdAt DateTime       @default(now())
-  eventId   Int
-  event     Event          @relation(fields: [eventId], references: [id])
-
-  Order_Details Order_Details[]
-}
-
-model Order {
-  id          Int         @id @default(autoincrement())
-  total_price Int
-  final_price Int
-  status      StatusOrder
-  coupon      Boolean     @default(false)
-  point       Int         @default(0)
-  createdAt   DateTime    @default(now())
-  expiredAt   DateTime
-  userId      String
-  user        User        @relation(fields: [userId], references: [id])
-
-  Order_Details Order_Details[]
-}
-
-model Order_Details {
-  orderId  Int
-  ticketId Int
-  qty      Int
-  subtotal Int
-  ticket   Ticket @relation(fields: [ticketId], references: [id])
-  order    Order  @relation(fields: [orderId], references: [id])
-
-  @@id([orderId, ticketId])
-}
-
-model Review {
-  id          Int    @id @default(autoincrement())
-  description String
-  rating      Int
-  userId      String
-  eventId     Int
-  user        User   @relation(fields: [userId], references: [id])
-  event       Event  @relation(fields: [eventId], references: [id])
 }
