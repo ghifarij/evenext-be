@@ -28,7 +28,6 @@ enum EventStatus {
   finish
 }
 
-
 enum TicketCategory {
   Free
   EarlyBird
@@ -105,7 +104,7 @@ model Event {
   category    EventCategory
   location    EventLocation
   venue       String
-  status      EventStatus   @default(active)
+  status      EventStatus?   @default(active)
   date        DateTime      @db.Date
   time        DateTime      @db.Time()
   createdAt   DateTime      @default(now())
@@ -156,11 +155,14 @@ model Order_Details {
 }
 
 model Review {
-  id          Int    @id @default(autoincrement())
+  userId  String
+  eventId Int
+
   description String
   rating      Int
-  userId      String
-  eventId     Int
-  user        User   @relation(fields: [userId], references: [id])
-  event       Event  @relation(fields: [eventId], references: [id])
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  event       Event    @relation(fields: [eventId], references: [id])
+
+  @@id([userId, eventId])
 }
