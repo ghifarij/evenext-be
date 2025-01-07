@@ -43,6 +43,11 @@ export class DashboardRouter {
       verifyTokenPro,
       this.dashboardController.getIncomePerYear
     );
+    this.router.get(
+      "/ticketsales",
+      verifyTokenPro,
+      this.dashboardController.getTicketSales
+    );
   }
 
   getRouter(): Router {
