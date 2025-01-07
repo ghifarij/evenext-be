@@ -23,6 +23,7 @@ export class EventRouter {
     );
     this.router.get("/all", this.eventController.getAllEvents);
 
+    this.router.get("/:id(\\d+)", this.eventController.getEventDetail);
     this.router.get("/:slug", this.eventController.getEventSlug);
   }
 

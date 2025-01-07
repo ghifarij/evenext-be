@@ -9,6 +9,7 @@ import path from "path";
 import { PromotorRouter } from "./router/promotor.router";
 import { DashboardRouter } from "./router/dashboard.router";
 import { OrderRouter } from "./router/order.router";
+import { ReviewRouter } from "./router/review.router";
 
 const PORT: number = 8000;
 
@@ -36,6 +37,7 @@ const userRouter = new UserRouter();
 const promotorRouter = new PromotorRouter();
 const authRouter = new AuthRouter();
 const orderRouter = new OrderRouter();
+const reviewRouter = new ReviewRouter();
 
 app.use("/api/events", eventRouter.getRouter());
 app.use("/api/dashboard", dashboardRouter.getRouter());
@@ -44,6 +46,7 @@ app.use("/api/users", userRouter.getRouter());
 app.use("/api/promotors", promotorRouter.getRouter());
 app.use("/api/auth", authRouter.getRouter());
 app.use("/api/orders", orderRouter.getRouter());
+app.use("/api/reviews", reviewRouter.getRouter());
 
 console.log(process.env.NODE_ENV === "production");
 console.log(process.env.BASE_URL_FE);
