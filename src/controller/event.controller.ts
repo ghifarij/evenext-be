@@ -1,7 +1,12 @@
 import { Request, Response } from "express";
 import prisma from "../prisma";
 import { cloudinaryUpload } from "../services/cloudinary";
-import { Prisma } from "../../prisma/generated/client";
+import {
+  EventCategory,
+  EventLocation,
+  EventStatus,
+  Prisma,
+} from "../../prisma/generated/client";
 
 export class EventController {
   async getEvents(req: Request, res: Response) {
@@ -26,15 +31,28 @@ export class EventController {
 
   async getAllEvents(req: Request, res: Response) {
     try {
-      const { search, page = 1, limit = 9 } = req.query;
+      const { search, page = 1, limit = 9, category, location } = req.query;
 
       const filter: Prisma.EventWhereInput = {};
       if (search) {
         filter.title = { contains: search as string, mode: "insensitive" };
       }
+      if (
+        category &&
+        Object.values(EventCategory).includes(category as EventCategory)
+      ) {
+        filter.category = category as EventCategory;
+      }
+      if (
+        location &&
+        Object.values(EventLocation).includes(location as EventLocation)
+      ) {
+        filter.location = location as EventLocation;
+      }
 
       const countEvents = await prisma.event.aggregate({
         _count: { _all: true },
+        where: filter,
       });
       const totalPage = Math.ceil(countEvents._count._all / +limit);
 
@@ -45,6 +63,44 @@ export class EventController {
         skip: +limit * (+page - 1),
       });
       res.status(200).send({ totalPage, page: +page, events });
+    } catch (err) {
+      console.log(err);
+      res.status(400).send(err);
+    }
+  }
+
+  async getEventDetail(req: Request, res: Response) {
+    try {
+      const { status } = req.query;
+
+      const eventSelect: Prisma.EventSelect = {
+        title: true,
+        thumbnail: true,
+        date: true,
+        time: true,
+        status: true,
+        promotor: {
+          select: {
+            id: true,
+            username: true,
+            avatar: true,
+          },
+        },
+        description: true,
+        terms: true,
+      };
+
+      const whereClause: any = { id: +req.params.id };
+      if (status && ["active", "finish"].includes(status.toString())) {
+        whereClause.status = status as EventStatus;
+      }
+
+      const event = await prisma.event.findUnique({
+        where: whereClause,
+        select: eventSelect,
+      });
+
+      res.status(200).send({ result: event });
     } catch (err) {
       console.log(err);
       res.status(400).send(err);
