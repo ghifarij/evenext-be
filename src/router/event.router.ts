@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { EventController } from "../controller/event.controller";
 import { uploader } from "../services/uploader";
+import { verifyTokenPro } from "../middlewares/verify";
 
 export class EventRouter {
   private eventController: EventController;
@@ -16,11 +17,13 @@ export class EventRouter {
     this.router.get("/", this.eventController.getEvents);
     this.router.post(
       "/",
+      verifyTokenPro,
       uploader("memoryStorage", "event").single("thumbnail"),
       this.eventController.createEvent
     );
     this.router.get("/all", this.eventController.getAllEvents);
 
+    this.router.get("/:id(\\d+)", this.eventController.getEventDetail);
     this.router.get("/:slug", this.eventController.getEventSlug);
   }
 

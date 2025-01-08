@@ -2,185 +2,259 @@ import { Request, Response } from "express";
 import prisma from "../prisma";
 const midtransClient = require("midtrans-client");
 import dotenv from "dotenv";
+import { requestBody } from "../types/reqBody";
 dotenv.config();
 
 export class OrderController {
-  async createOrder(req: Request, res: Response) {
+  async createOrder(req: Request<{}, {}, requestBody>, res: Response) {
     try {
-      const customerId = req.user?.id!;
-      const { totalPrice, finalPrice, orderCart } = req.body;
-      const expiredAt = new Date(new Date().getTime() + 10 * 60 * 1000);
+      const userId = req.user?.id;
+      const { total_price, coupon, point, final_price, orderCart } = req.body;
+      const expiredAt = new Date(new Date().getTime() + 30 * 60 * 1000);
 
-      // Create the order
-      const { id } = await prisma.order.create({
-        data: {
-          userId: customerId,
-          total_price: totalPrice,
-          final_price: finalPrice,
-          expiredAt,
-          status: "Pending",
-        },
-      });
+      if (!orderCart || !Array.isArray(orderCart)) {
+        throw new Error(
+          "Invalid orderCart data. Ensure it's an array of items."
+        );
+      }
 
-      // Process each item in the order cart
-      for (const order of orderCart) {
-        const ticket = await prisma.ticket.findUnique({
-          where: { id: order.ticket.id },
-        });
-
-        if (!ticket) {
-          throw new Error(`Ticket with ID ${order.ticket.id} not found`);
+      const orderId = await prisma.$transaction(async (prisma) => {
+        if (coupon) {
+          const coupon = await prisma.coupon.findFirst({
+            where: { userId: userId },
+          });
+          await prisma.coupon.update({
+            where: { id: coupon?.id },
+            data: { isActive: false },
+          });
         }
-
-        const subTotalPrice = ticket.price * order.quantity;
-
-        // Create order details
-        await prisma.order_Details.create({
+        if (point) {
+          await prisma.point.updateMany({
+            where: { userId: userId },
+            data: { isActive: false },
+          });
+        }
+        const { id } = await prisma.order.create({
           data: {
-            orderId: id,
-            ticketId: order.ticket.id,
-            qty: order.quantity,
+            userId: userId!,
+            total_price,
+            final_price,
+            status: "Pending",
+            coupon,
+            point,
+            expiredAt,
           },
         });
 
-        // Decrease ticket quantity
-        await prisma.ticket.update({
-          where: { id: order.ticket.id },
-          data: { seats: { decrement: order.quantity } },
-        });
-      }
+        await Promise.all(
+          orderCart.map(async (item) => {
+            if (item.qty > item.ticket.seats) {
+              throw new Error(
+                `Insufficient seats for ticket ID: ${item.ticket.id}`
+              );
+            }
+            await prisma.order_Details.create({
+              data: {
+                orderId: id,
+                ticketId: item.ticket.id,
+                qty: item.qty,
+                subtotal: item.qty * item.ticket.price,
+              },
+            });
+            await prisma.ticket.update({
+              where: { id: item.ticket.id },
+              data: { seats: { decrement: item.qty } },
+            });
+          })
+        );
+        return id;
+      });
 
       res
         .status(201)
-        .send({ message: "Order created successfully", orderId: id });
+        .send({ message: "Order created successfully", order_id: orderId });
     } catch (error) {
       console.error(error);
       res.status(400).send({ error: "Failed to create order", details: error });
     }
   }
 
-  async getOrderDetail(req: Request, res: Response) {
+  async getOrderId(req: Request, res: Response) {
     try {
       const order = await prisma.order.findUnique({
-        where: { id: parseInt(req.params.orderId) },
-        include: {
+        where: { id: +req.params.id },
+        select: {
+          expiredAt: true,
+          coupon: true,
+          point: true,
+          total_price: true,
+          final_price: true,
           Order_Details: {
-            include: {
+            select: {
+              qty: true,
+              subtotal: true,
               ticket: {
-                include: {
-                  event: true,
+                select: {
+                  category: true,
+                  price: true,
+                  event: {
+                    select: {
+                      title: true,
+                      thumbnail: true,
+                      date: true,
+                      time: true,
+                      location: true,
+                      venue: true,
+                    },
+                  },
                 },
               },
             },
           },
         },
       });
-
-      if (!order) {
-        throw new Error("Order not found");
-      }
-
-      res.status(200).send(order);
+      res.status(200).send({ result: order });
     } catch (err) {
-      console.error(err);
-      res.status(400).send({ message: err });
+      console.log(err);
+      res.status(400).send(err);
     }
   }
 
-  async getOrderToken(req: Request, res: Response) {
+  async getSnapToken(req: Request, res: Response) {
     try {
       const { order_id } = req.body;
+      const item_details = [];
 
-      const activeOrder = await prisma.order.findUnique({
+      const checkTransaction = await prisma.order.findUnique({
         where: { id: order_id },
+        select: { status: true, expiredAt: true, coupon: true, point: true },
+      });
+      if (checkTransaction?.status === "Cancel")
+        throw "Status transaksi sudah menjadi cancel";
+
+      const ticketTransaction = await prisma.order_Details.findMany({
+        where: { orderId: order_id },
+        include: {
+          ticket: {
+            select: {
+              category: true,
+            },
+          },
+        },
       });
 
-      if (!activeOrder || activeOrder.status === "Cancel") {
-        throw new Error("Order is not active or has been canceled.");
+      const user = await prisma.user.findUnique({
+        where: { id: req.user?.id },
+      });
+
+      for (const item of ticketTransaction) {
+        item_details.push({
+          id: item.ticketId,
+          price: item.subtotal / item.qty,
+          quantity: item.qty,
+          name: item.ticket.category,
+        });
       }
 
-      const orderDetails = await prisma.order_Details.findMany({
-        where: { orderId: order_id },
-        include: { ticket: true },
-      });
+      if (checkTransaction?.coupon) {
+        const coupon = await prisma.coupon.findFirst({
+          where: { userId: user?.id },
+        });
+        item_details.push({
+          id: coupon?.id,
+          price: -(req.body.total_price - checkTransaction.point) / 10,
+          quantity: 1,
+          name: "Coupon",
+        });
+      }
 
-      const customer = await prisma.user.findUnique({
-        where: { id: activeOrder.userId },
-      });
+      if (checkTransaction && checkTransaction?.point > 0) {
+        const points = await prisma.point.findMany({
+          where: { userId: req.user?.id },
+          select: { point: true },
+          orderBy: { createdAt: "asc" },
+        });
+
+        item_details.push({
+          id: points[0].point,
+          price: -checkTransaction.point,
+          quantity: 1,
+          name: "Points",
+        });
+      }
+
+      const resMinutes =
+        new Date(`${checkTransaction?.expiredAt}`).getTime() -
+        new Date().getTime();
 
       const snap = new midtransClient.Snap({
         isProduction: false,
-        serverKey: process.env.MIDTRANS_SERVER_KEY,
+        serverKey: `${process.env.MID_SERVER_KEY}`,
       });
 
-      const items = orderDetails.map((detail) => ({
-        id: detail.ticketId.toString(),
-        name: detail.ticket.category,
-        price: detail.ticket.price,
-        quantity: detail.qty,
-      }));
-
-      const parameter = {
-        transaction_details: {
-          order_id: order_id.toString(),
-          gross_amount: activeOrder.final_price,
-        },
+      const parameters = {
+        transaction_details: req.body,
         customer_details: {
-          first_name: customer?.username,
-          email: customer?.email,
+          user_name: user?.username,
+          email: user?.email,
         },
-        item_details: items,
+        item_details,
+        page_expiry: {
+          duration: new Date(resMinutes).getMinutes(),
+          unit: "minutes",
+        },
         expiry: {
           unit: "minutes",
-          duration: Math.ceil(
-            (new Date(activeOrder.expiredAt).getTime() - new Date().getTime()) /
-              60000
-          ),
+          duration: new Date(resMinutes).getMinutes(),
         },
       };
 
-      const transaction = await snap.createTransaction(parameter);
-
-      res.status(200).send({ orderToken: transaction.token });
+      const transaction = await snap.createTransaction(parameters);
+      res.status(200).send({ result: transaction.token });
     } catch (err) {
-      console.error(err);
-      res.status(400).send({ message: err });
+      console.log(err);
+      res.status(400).send(err);
     }
   }
 
-  async updateOrder(req: Request, res: Response) {
+  async midtransWebHook(req: Request, res: Response) {
     try {
       const { transaction_status, order_id } = req.body;
 
-      let status: "Pending" | "Paid" | "Cancel" =
-        transaction_status === "settlement"
-          ? "Paid"
-          : transaction_status === "pending"
-          ? "Pending"
-          : "Cancel";
+      let statusTransaction: "Paid" | "Pending" | "Cancel" = "Pending";
+      if (transaction_status === "settlement") {
+        statusTransaction = "Paid";
+      } else if (transaction_status === "cancel") {
+        statusTransaction = "Cancel";
+      }
 
-      if (status === "Cancel") {
-        const details = await prisma.order_Details.findMany({
-          where: { orderId: order_id },
+      if (statusTransaction === "Cancel") {
+        const tickets = await prisma.order_Details.findMany({
+          where: { orderId: +order_id },
+          select: {
+            qty: true,
+            ticketId: true,
+          },
         });
 
-        for (const detail of details) {
+        for (const item of tickets) {
           await prisma.ticket.update({
-            where: { id: detail.ticketId },
-            data: { seats: { increment: detail.qty } },
+            where: { id: item.ticketId },
+            data: { seats: { increment: item.qty } },
           });
         }
       }
 
       await prisma.order.update({
-        where: { id: order_id },
-        data: { status },
+        where: { id: +order_id },
+        data: {
+          status: statusTransaction,
+        },
       });
-
-      res.status(200).send({ message: "Order status updated successfully" });
+      res.status(200).send({ message: "Order berhasil" });
     } catch (err) {
-      console.error(err);
-      res.status(400).send({ message: err });
+      console.log(err);
+      res.status(400).send(err);
     }
   }
 }

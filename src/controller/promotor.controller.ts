@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import prisma from "../prisma";
 import { validate as isUuid } from "uuid";
 import { cloudinaryUpload } from "../services/cloudinary";
-import { Prisma } from "prisma/generated/client";
+import { Prisma } from "../../prisma/generated/client";
 
 export class PromotorController {
   async getPromotors(req: Request, res: Response) {

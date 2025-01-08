@@ -118,31 +118,30 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 });
 
 exports.Prisma.UserScalarFieldEnum = {
-  id: 'id',
-  username: 'username',
   email: 'email',
   password: 'password',
   avatar: 'avatar',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  id: 'id',
   isVerify: 'isVerify',
   ref_code: 'ref_code',
-  referred_by: 'referred_by',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  username: 'username',
+  referred_by: 'referred_by'
 };
 
-exports.Prisma.User_PointScalarFieldEnum = {
+exports.Prisma.PointScalarFieldEnum = {
   id: 'id',
   point: 'point',
   createdAt: 'createdAt',
   expiredAt: 'expiredAt',
-  isRedeem: 'isRedeem',
+  isActive: 'isActive',
   userId: 'userId'
 };
 
-exports.Prisma.User_CouponScalarFieldEnum = {
+exports.Prisma.CouponScalarFieldEnum = {
   id: 'id',
-  isRedeem: 'isRedeem',
-  percentage: 'percentage',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   expiredAt: 'expiredAt',
   userId: 'userId'
@@ -150,29 +149,30 @@ exports.Prisma.User_CouponScalarFieldEnum = {
 
 exports.Prisma.PromotorScalarFieldEnum = {
   id: 'id',
-  username: 'username',
   email: 'email',
   password: 'password',
   avatar: 'avatar',
   isVerify: 'isVerify',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  username: 'username'
 };
 
 exports.Prisma.EventScalarFieldEnum = {
   id: 'id',
   title: 'title',
-  slug: 'slug',
-  thumbnail: 'thumbnail',
   description: 'description',
   terms: 'terms',
   category: 'category',
   location: 'location',
   venue: 'venue',
   date: 'date',
-  time: 'time',
   createdAt: 'createdAt',
-  promotorId: 'promotorId'
+  promotorId: 'promotorId',
+  thumbnail: 'thumbnail',
+  slug: 'slug',
+  time: 'time',
+  status: 'status'
 };
 
 exports.Prisma.TicketScalarFieldEnum = {
@@ -189,25 +189,26 @@ exports.Prisma.OrderScalarFieldEnum = {
   total_price: 'total_price',
   final_price: 'final_price',
   status: 'status',
-  redirect_url: 'redirect_url',
   createdAt: 'createdAt',
+  userId: 'userId',
   expiredAt: 'expiredAt',
-  userId: 'userId'
+  coupon: 'coupon',
+  point: 'point'
 };
 
 exports.Prisma.Order_DetailsScalarFieldEnum = {
-  id: 'id',
   ticketId: 'ticketId',
   qty: 'qty',
-  orderId: 'orderId'
+  orderId: 'orderId',
+  subtotal: 'subtotal'
 };
 
 exports.Prisma.ReviewScalarFieldEnum = {
-  id: 'id',
   description: 'description',
   rating: 'rating',
   userId: 'userId',
-  eventId: 'eventId'
+  eventId: 'eventId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -238,6 +239,11 @@ exports.EventLocation = exports.$Enums.EventLocation = {
   Bali: 'Bali'
 };
 
+exports.EventStatus = exports.$Enums.EventStatus = {
+  active: 'active',
+  finish: 'finish'
+};
+
 exports.TicketCategory = exports.$Enums.TicketCategory = {
   Free: 'Free',
   EarlyBird: 'EarlyBird',
@@ -253,8 +259,8 @@ exports.StatusOrder = exports.$Enums.StatusOrder = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  User_Point: 'User_Point',
-  User_Coupon: 'User_Coupon',
+  Point: 'Point',
+  Coupon: 'Coupon',
   Promotor: 'Promotor',
   Event: 'Event',
   Ticket: 'Ticket',

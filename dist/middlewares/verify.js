@@ -42,8 +42,13 @@ exports.checkUser = checkUser;
 const verifyTokenPro = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
+<<<<<<< HEAD
+        // const token = req.header("Authorization")?.replace("Bearer ", "");
+        const token = (_a = req.cookies) === null || _a === void 0 ? void 0 : _a.token; // kalo sudah pakai cookies
+=======
         const token = (_a = req.header("Authorization")) === null || _a === void 0 ? void 0 : _a.replace("Bearer ", "");
         // const token = req.cookies?.token; // kalo sudah pakai cookies
+>>>>>>> 29015dbb829ec7e191342e3e6ac54a2e823e33b7
         if (!token)
             throw "Unauthorize!";
         const verifiedPromotor = (0, jsonwebtoken_1.verify)(token, process.env.JWT_KEY);
