@@ -128,25 +128,6 @@ class PromotorController {
             }
         });
     }
-    editAvatarPro(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            var _a;
-            try {
-                if (!req.file)
-                    throw { message: "File is Empty!" };
-                const link = `http://localhost:8000/api/public/avatar/${req.file.filename}`;
-                yield prisma_1.default.promotor.update({
-                    data: { avatar: link },
-                    where: { id: (_a = req.promotor) === null || _a === void 0 ? void 0 : _a.id },
-                });
-                res.status(200).send({ message: "Avatar Edited! ✅" });
-            }
-            catch (err) {
-                console.log(err);
-                res.status(400).send(err);
-            }
-        });
-    }
     editAvatarProCloud(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;

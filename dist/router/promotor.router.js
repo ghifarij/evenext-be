@@ -15,7 +15,6 @@ class PromotorRouter {
     initializeRoutes() {
         this.router.get("/", verify_1.verifyTokenPro, verify_1.checkPromotor, this.promotorController.getPromotors);
         this.router.post("/", verify_1.verifyTokenPro, this.promotorController.createPromotor);
-        this.router.patch("/avatar", verify_1.verifyTokenPro, (0, uploader_1.uploader)("memoryStorage", "avatar-", "/avatar").single("file"), this.promotorController.editAvatarPro);
         this.router.patch("/avatar-cloud", verify_1.verifyTokenPro, (0, uploader_1.uploader)("memoryStorage", "avatar").single("file"), this.promotorController.editAvatarProCloud);
         this.router.get("/:id", this.promotorController.getPromotorsId);
         this.router.patch("/:id", this.promotorController.editPromotor);

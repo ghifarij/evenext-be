@@ -17,6 +17,7 @@ const client_1 = require("../../prisma/generated/client");
 const prisma_1 = __importDefault(require("../prisma"));
 const uuid_1 = require("uuid");
 const cloudinary_1 = require("../services/cloudinary");
+const base_url = process.env.NEXT_PUBLIC_BASE_URL_BE;
 class UserController {
     getUsers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -118,25 +119,6 @@ class UserController {
                 const { id } = req.params;
                 yield prisma_1.default.user.delete({ where: { id } });
                 res.status(200).send("User Deleted! ✅");
-            }
-            catch (err) {
-                console.log(err);
-                res.status(400).send(err);
-            }
-        });
-    }
-    editAvatar(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            var _a;
-            try {
-                if (!req.file)
-                    throw { message: "File is Empty!" };
-                const link = `http://localhost:8000/api/public/avatar/${req.file.filename}`;
-                yield prisma_1.default.user.update({
-                    data: { avatar: link },
-                    where: { id: (_a = req.user) === null || _a === void 0 ? void 0 : _a.id },
-                });
-                res.status(200).send({ message: "Avatar Edited! ✅" });
             }
             catch (err) {
                 console.log(err);
