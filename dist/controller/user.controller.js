@@ -163,5 +163,49 @@ class UserController {
             }
         });
     }
+    getUserCoupon(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                const coupon = yield prisma_1.default.coupon.findFirst({
+                    where: {
+                        AND: [
+                            { userId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.id },
+                            { expiredAt: { gt: new Date() } },
+                            { isActive: true },
+                        ],
+                    },
+                    select: { isActive: true },
+                });
+                res.status(200).send({ result: coupon === null || coupon === void 0 ? void 0 : coupon.isActive });
+            }
+            catch (err) {
+                console.log(err);
+                res.status(400).send(err);
+            }
+        });
+    }
+    getPointsUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                const points = yield prisma_1.default.point.aggregate({
+                    where: {
+                        AND: [
+                            { userId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.id },
+                            { isActive: true },
+                            { expiredAt: { gt: new Date() } },
+                        ],
+                    },
+                    _sum: { point: true },
+                });
+                res.status(200).send({ result: points._sum.point });
+            }
+            catch (err) {
+                console.log(err);
+                res.status(400).send(err);
+            }
+        });
+    }
 }
 exports.UserController = UserController;

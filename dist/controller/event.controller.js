@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventController = void 0;
 const prisma_1 = __importDefault(require("../prisma"));
 const cloudinary_1 = require("../services/cloudinary");
+const client_1 = require("../../prisma/generated/client");
 class EventController {
     getEvents(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -41,13 +42,22 @@ class EventController {
     getAllEvents(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { search, page = 1, limit = 9 } = req.query;
+                const { search, page = 1, limit = 9, category, location } = req.query;
                 const filter = {};
                 if (search) {
                     filter.title = { contains: search, mode: "insensitive" };
                 }
+                if (category &&
+                    Object.values(client_1.EventCategory).includes(category)) {
+                    filter.category = category;
+                }
+                if (location &&
+                    Object.values(client_1.EventLocation).includes(location)) {
+                    filter.location = location;
+                }
                 const countEvents = yield prisma_1.default.event.aggregate({
                     _count: { _all: true },
+                    where: filter,
                 });
                 const totalPage = Math.ceil(countEvents._count._all / +limit);
                 const events = yield prisma_1.default.event.findMany({
@@ -57,6 +67,42 @@ class EventController {
                     skip: +limit * (+page - 1),
                 });
                 res.status(200).send({ totalPage, page: +page, events });
+            }
+            catch (err) {
+                console.log(err);
+                res.status(400).send(err);
+            }
+        });
+    }
+    getEventDetail(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { status } = req.query;
+                const eventSelect = {
+                    title: true,
+                    thumbnail: true,
+                    date: true,
+                    time: true,
+                    status: true,
+                    promotor: {
+                        select: {
+                            id: true,
+                            username: true,
+                            avatar: true,
+                        },
+                    },
+                    description: true,
+                    terms: true,
+                };
+                const whereClause = { id: +req.params.id };
+                if (status && ["active", "finish"].includes(status.toString())) {
+                    whereClause.status = status;
+                }
+                const event = yield prisma_1.default.event.findUnique({
+                    where: whereClause,
+                    select: eventSelect,
+                });
+                res.status(200).send({ result: event });
             }
             catch (err) {
                 console.log(err);
@@ -109,11 +155,13 @@ class EventController {
     }
     createEvent(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
                 if (!req.file)
                     throw { message: "thumbnail empty" };
                 const { secure_url } = yield (0, cloudinary_1.cloudinaryUpload)(req.file, "event");
-                const { title, slug, date, time, location, venue, category, description, terms, promotorId, } = req.body;
+                const { title, slug, date, time, location, venue, category, description, terms, } = req.body;
+                const promotorId = (_a = req.promotor) === null || _a === void 0 ? void 0 : _a.id;
                 const event = yield prisma_1.default.event.create({
                     data: {
                         thumbnail: secure_url,

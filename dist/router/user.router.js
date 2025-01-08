@@ -17,6 +17,8 @@ class UserRouter {
         this.router.post("/", verify_1.verifyToken, this.userController.createUser);
         this.router.patch("/avatar", verify_1.verifyToken, (0, uploader_1.uploader)("memoryStorage", "avatar-", "/avatar").single("file"), this.userController.editAvatar);
         this.router.patch("/avatar-cloud", verify_1.verifyToken, (0, uploader_1.uploader)("memoryStorage", "avatar").single("file"), this.userController.editAvatarCloud);
+        this.router.get("/coupon", verify_1.verifyToken, this.userController.getUserCoupon);
+        this.router.get("/points", verify_1.verifyToken, this.userController.getPointsUser);
         this.router.get("/:id", this.userController.getUsersId);
         this.router.patch("/:id", this.userController.editUser);
         this.router.delete("/:id", this.userController.deleteUser);

@@ -16,7 +16,7 @@ exports.PromotorController = void 0;
 const prisma_1 = __importDefault(require("../prisma"));
 const uuid_1 = require("uuid");
 const cloudinary_1 = require("../services/cloudinary");
-const client_1 = require("prisma/generated/client");
+const client_1 = require("../../prisma/generated/client");
 class PromotorController {
     getPromotors(req, res) {
         return __awaiter(this, void 0, void 0, function* () {

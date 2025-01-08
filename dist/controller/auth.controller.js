@@ -81,19 +81,18 @@ class AuthController {
                             referred_by,
                         },
                     });
-                    yield prisma_1.default.user_Coupon.create({
+                    yield prisma_1.default.coupon.create({
                         data: {
-                            percentage: 10,
-                            isRedeem: false,
+                            isActive: true,
                             expiredAt: (0, date_fns_1.addMonths)(new Date(), 3),
                             userId: newUser.id,
                         },
                     });
-                    yield prisma_1.default.user_Point.create({
+                    yield prisma_1.default.point.create({
                         data: {
                             point: 10000,
                             expiredAt: (0, date_fns_1.addMonths)(new Date(), 3),
-                            isRedeem: false,
+                            isActive: true,
                             userId: referrer.id,
                         },
                     });
@@ -303,7 +302,7 @@ class AuthController {
                             },
                             User_Coupon: {
                                 select: {
-                                    percentage: true,
+                                    id: true,
                                     expiredAt: true,
                                 },
                             },
@@ -339,8 +338,6 @@ class AuthController {
             }
         });
     }
-<<<<<<< HEAD
-=======
     forgotPasswordUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -359,7 +356,7 @@ class AuthController {
                     expiresIn: "1h", // Token valid for 1 hour
                 });
                 // Create the password reset link
-                const resetLink = `${process.env.BASE_URL_FE}/login/resetPasswordUser/${resetToken}`;
+                const resetLink = `${process.env.BASE_URL_FE}/user/resetPasswordUser/${resetToken}`;
                 // Prepare the email template
                 const templatePath = path_1.default.join(__dirname, "../templates", "forgotPassword.hbs");
                 const templateSource = fs_1.default.readFileSync(templatePath, "utf-8");
@@ -527,6 +524,5 @@ class AuthController {
             }
         });
     }
->>>>>>> 29015dbb829ec7e191342e3e6ac54a2e823e33b7
 }
 exports.AuthController = AuthController;

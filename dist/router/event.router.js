@@ -4,6 +4,7 @@ exports.EventRouter = void 0;
 const express_1 = require("express");
 const event_controller_1 = require("../controller/event.controller");
 const uploader_1 = require("../services/uploader");
+const verify_1 = require("../middlewares/verify");
 class EventRouter {
     constructor() {
         this.eventController = new event_controller_1.EventController();
@@ -12,8 +13,9 @@ class EventRouter {
     }
     initializeRoutes() {
         this.router.get("/", this.eventController.getEvents);
-        this.router.post("/", (0, uploader_1.uploader)("memoryStorage", "event").single("thumbnail"), this.eventController.createEvent);
+        this.router.post("/", verify_1.verifyTokenPro, (0, uploader_1.uploader)("memoryStorage", "event").single("thumbnail"), this.eventController.createEvent);
         this.router.get("/all", this.eventController.getAllEvents);
+        this.router.get("/:id(\\d+)", this.eventController.getEventDetail);
         this.router.get("/:slug", this.eventController.getEventSlug);
     }
     getRouter() {
