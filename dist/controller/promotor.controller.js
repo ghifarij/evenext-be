@@ -13,10 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromotorController = void 0;
-const client_1 = require("@prisma/client");
 const prisma_1 = __importDefault(require("../prisma"));
 const uuid_1 = require("uuid");
 const cloudinary_1 = require("../services/cloudinary");
+const client_1 = require("prisma/generated/client");
 class PromotorController {
     getPromotors(req, res) {
         return __awaiter(this, void 0, void 0, function* () {

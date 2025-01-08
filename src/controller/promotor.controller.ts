@@ -1,8 +1,8 @@
-import { Prisma } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import prisma from "../prisma";
 import { validate as isUuid } from "uuid";
 import { cloudinaryUpload } from "../services/cloudinary";
+import { Prisma } from "prisma/generated/client";
 
 export class PromotorController {
   async getPromotors(req: Request, res: Response) {
@@ -100,7 +100,7 @@ export class PromotorController {
       const { id } = req.params;
       const updatedPromotor = await prisma.promotor.update({
         data: req.body,
-        where: { id:id || "" },
+        where: { id: id || "" },
       });
       res
         .status(200)
@@ -115,7 +115,7 @@ export class PromotorController {
     try {
       const { id } = req.params;
       await prisma.promotor.delete({ where: { id } });
-      res.status(200).send({message: "Promotor Deleted! ✅"});
+      res.status(200).send({ message: "Promotor Deleted! ✅" });
     } catch (err) {
       console.log(err);
       res.status(400).send(err);
