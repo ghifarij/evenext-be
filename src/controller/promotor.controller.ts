@@ -122,21 +122,6 @@ export class PromotorController {
     }
   }
 
-  async editAvatarPro(req: Request, res: Response) {
-    try {
-      if (!req.file) throw { message: "File is Empty!" };
-      const link = `http://localhost:8000/api/public/avatar/${req.file.filename}`;
-      await prisma.promotor.update({
-        data: { avatar: link },
-        where: { id: req.promotor?.id },
-      });
-      res.status(200).send({ message: "Avatar Edited! ✅" });
-    } catch (err) {
-      console.log(err);
-      res.status(400).send(err);
-    }
-  }
-
   async editAvatarProCloud(req: Request, res: Response) {
     try {
       if (!req.file) throw { message: "File is Empty!" };

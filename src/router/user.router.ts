@@ -17,12 +17,6 @@ export class UserRouter {
     this.router.get("/", verifyToken, checkUser, this.userController.getUsers);
     this.router.post("/", verifyToken, this.userController.createUser);
     this.router.patch(
-      "/avatar",
-      verifyToken,
-      uploader("memoryStorage", "avatar-", "/avatar").single("file"),
-      this.userController.editAvatar
-    );
-    this.router.patch(
       "/avatar-cloud",
       verifyToken,
       uploader("memoryStorage", "avatar").single("file"),

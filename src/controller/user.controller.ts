@@ -4,6 +4,7 @@ import prisma from "../prisma";
 import { validate as isUuid } from "uuid";
 import { cloudinaryUpload } from "../services/cloudinary";
 
+const base_url = process.env.NEXT_PUBLIC_BASE_URL_BE;
 export class UserController {
   async getUsers(req: Request, res: Response) {
     console.log(req.user);
@@ -113,21 +114,6 @@ export class UserController {
       const { id } = req.params;
       await prisma.user.delete({ where: { id } });
       res.status(200).send("User Deleted! ✅");
-    } catch (err) {
-      console.log(err);
-      res.status(400).send(err);
-    }
-  }
-
-  async editAvatar(req: Request, res: Response) {
-    try {
-      if (!req.file) throw { message: "File is Empty!" };
-      const link = `http://localhost:8000/api/public/avatar/${req.file.filename}`;
-      await prisma.user.update({
-        data: { avatar: link },
-        where: { id: req.user?.id },
-      });
-      res.status(200).send({ message: "Avatar Edited! ✅" });
     } catch (err) {
       console.log(err);
       res.status(400).send(err);
